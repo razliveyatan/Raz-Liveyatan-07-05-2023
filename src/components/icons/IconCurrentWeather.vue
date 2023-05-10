@@ -18,5 +18,6 @@ defineProps<{
 .weather-icon {
     width:auto;
     height:auto;
+    animation: weather-icon-rotation 3s linear infinite;
 }
 </style>

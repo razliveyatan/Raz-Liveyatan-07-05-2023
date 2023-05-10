@@ -14,6 +14,7 @@ const getLocationsData = async() => {
   try {
       if (input.value !== '' && input.value.length >= 2){
         searchResultsVisible.value = true;
+        cities.value = [];
         const response = await getLocationsList(input.value);              
         if (response && response.data){          
           for (let i=0;i<response.data.length;i++){

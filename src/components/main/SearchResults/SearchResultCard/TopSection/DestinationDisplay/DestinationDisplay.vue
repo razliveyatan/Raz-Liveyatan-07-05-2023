@@ -19,11 +19,11 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.destination-display-container{
+/* .destination-display-container{
    display: grid;
    gap:3rem;
    grid-template-columns: repeat(1,minmax(0,1fr));    
-}
+} */
 .multiple{   
    grid-template-columns: repeat(2,minmax(0,1fr));    
 }
@@ -41,11 +41,11 @@ const props = defineProps<{
     }
 }
 
-.destination-display-item {
+/* .destination-display-item {
     border: 1px solid gray;
     border-radius: 1rem;
     height: 100px;
     padding: 0 1rem;
     display: flex;
-}
+} */
 </style>

@@ -33,7 +33,7 @@ if (currentLocation){
 
 </script>
 <template>
-    <div class="search-results-card">
+    <div class="search-results-card" v-if="displayItems.length > 0">
         <div class="search-results-card-top-inner">
             <DestinationDisplay :display-items="displayItems"/>
             <AddToFavoriteButton/>           
@@ -44,7 +44,26 @@ if (currentLocation){
 </template>
 
 <style scoped>
+.hidden {
+    display: none;
+}
+
 .search-results-card {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-results-card-top-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+/* .search-results-card {
     background-color:cornsilk;
     border: 1px black solid;
     width:860px;
@@ -58,5 +77,5 @@ if (currentLocation){
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
+} */
 </style>

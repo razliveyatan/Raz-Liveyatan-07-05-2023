@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import {getLocationsList, normalizeLocationObject, getLocationConditions} from '../../services/data-helper-service';
+import {getLocationsList, normalizeLocationObject, getLocationConditions, normalizeCurrentConditionsObject} from '../../services/data-helper-service';
 import {debounce} from 'lodash';
 import type {ILocation} from '@/interfaces/interfaces';
+import {useCurrentConditionsStore} from '@/stores/conditions-store'
 
+const currentConditionsStore = useCurrentConditionsStore();
 let input = ref('');
 const cities = ref<ILocation[]>([]);
 
@@ -33,12 +35,18 @@ const debouncedFetchData = debounce(() => {
 
 const getCurrentLocationConditions = async(city:ILocation) => {
   if (city){
-    const data = await getLocationConditions(city.cityKey);
-    if (data){
-      console.log(data);
+    const response = await getLocationConditions(city.cityKey);
+    if (response && response.data){    
+      for (let i=0;i<response.data.length;i++){
+            const normalized = normalizeCurrentConditionsObject(response.data[i]);
+            if (normalized){              
+              currentConditionsStore.setCurrentLocationCondition(normalized);
+            }
+          }          
+        }
     }
   }
-}
+
 
 </script>
 

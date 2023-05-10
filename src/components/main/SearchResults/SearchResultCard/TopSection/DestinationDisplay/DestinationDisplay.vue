@@ -4,7 +4,7 @@ import DestionationDetailsVue from './DestionationDetails.vue'
 const destinations:any = ["something","something"];
 </script>
 <template>
-    <div class="destination-display-container" :class="{' multiple': destinations.length > 0}">
+    <div class="destination-display-container" :class="{' multiple': destinations.length > 1}">
         <div class="destination-display-item">
             <IconCurrentWeatherVue/>
             <DestionationDetailsVue/>

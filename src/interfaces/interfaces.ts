@@ -11,11 +11,11 @@ export interface ILocation{
     cityID:number
 }
 
-export interface IWeatherResponse {
+export interface ICurrentConditions {
     weatherText:string,
-    weatherIcon:number,
-    weatherMetricTemprature:any,
-    weatherMetricUnitType:string,
-    weatherImperialTemprature:any,
-    weatherImperialUnitType:string,
+    weatherIcon:string,
+    weatherCelsiusTemprature:any,
+    weatherCelsiusUnitType:string,
+    weatherFahrenheitTemprature:any,
+    weatherFahrenheitlUnitType:string,
 }

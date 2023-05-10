@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import IconCurrentWeatherVue from '../../../../../icons/IconCurrentWeather.vue'
+import IconCurrentWeather from '@/components/icons/IconCurrentWeather.vue'
 import DestionationDetailsVue from './DestionationDetails.vue'
-const destinations:any = ["something","something"];
+import type { IDestinationDisplay } from '@/interfaces/interfaces';
+
+const props = defineProps<{
+  displayItems: IDestinationDisplay[];
+}>();
+
 </script>
+
 <template>
-    <div class="destination-display-container" :class="{' multiple': destinations.length > 1}">
+    <div class="destination-display-container" :class="{' multiple': props.displayItems.length > 1}">
         <div class="destination-display-item">
-            <IconCurrentWeatherVue/>
-            <DestionationDetailsVue/>
+            <IconCurrentWeather v-for="displayItem in props.displayItems" :icon-url="displayItem.weatherIcon"/>
+            <DestionationDetailsVue v-for="displayItem in props.displayItems" :city-name="displayItem.cityName" :temprature="displayItem.tempratureValue" :temprtaute-type="displayItem.tempratureValueType" />
         </div>
     </div>
 </template>

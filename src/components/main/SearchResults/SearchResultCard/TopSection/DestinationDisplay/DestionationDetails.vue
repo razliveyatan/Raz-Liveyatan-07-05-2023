@@ -1,8 +1,14 @@
-
+<script setup lang="ts">
+defineProps<{
+  cityName: string|null,
+  temprature:number,
+  temprtauteType:string,
+}>();
+</script>
 <template>
     <div class="destination-details-container">
-        <p>Tel Aviv</p>
-        <p>22°</p>
+        <p>{{cityName}}</p>
+        <p>{{temprature}}°{{ temprtauteType }}</p>
     </div>
 </template>
 

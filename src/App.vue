@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import {useCounterStore} from '@/stores/counter';
 import NavPanel from './components/NavPanel.vue';
-
 import TempConversionButton from './components/nav/TempConversionButton.vue'
-
-const {count} = storeToRefs(useCounterStore());
 const headers = ["Main","Favorites"];
 </script>
 

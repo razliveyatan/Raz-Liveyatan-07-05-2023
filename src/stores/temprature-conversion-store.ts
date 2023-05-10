@@ -12,5 +12,5 @@ export const useDefaultTempratureTypeStore = defineStore('main', {
     setDefaultTempratureType(type: string): void {
       this.defaultTempratureType = type;
     },
-  },
+  },  
 });

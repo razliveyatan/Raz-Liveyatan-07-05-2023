@@ -3,11 +3,39 @@ import DailyForecast from './SearchResultCard/BottomSection/DailyForecast.vue';
 import MainForecast from './SearchResultCard/MainSection/MainForecast.vue';
 import AddToFavoriteButton from './SearchResultCard/TopSection/AddToFavoriteButton.vue';
 import DestinationDisplay from './SearchResultCard/TopSection/DestinationDisplay/DestinationDisplay.vue';
+import { storeToRefs } from 'pinia';
+import {useLocationsStore} from '@/stores/locations-store';
+import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
+import { reactive, watch } from 'vue';
+import type {IDestinationDisplay} from '@/interfaces/interfaces';
+
+const {currentLocation} = storeToRefs(useLocationsStore());
+const defaultTempratureType = useDefaultTempratureTypeStore().defaultTempratureType;
+const displayItems = reactive<IDestinationDisplay[]>([]);
+
+if (currentLocation){
+    watch(currentLocation, (newVal) => {
+    console.log(defaultTempratureType);
+  const newDisplayItem: IDestinationDisplay = {    
+    weatherIcon: newVal?.weatherIcon ?? '',
+    cityName: newVal?.cityName ?? '',
+    cityID:newVal?.cityID ?? 0,
+    tempratureValue: !defaultTempratureType ?  newVal?.weatherCelsiusTemprature : newVal?.weatherFahrenheitTemprature,
+    tempratureValueType: defaultTempratureType ? defaultTempratureType : 'C',
+    weatherCelsiusTemprature: newVal?.weatherCelsiusTemprature ?? 0,
+    weatherCelsiusUnitType: newVal?.weatherCelsiusUnitType ?? '',
+    weatherFahrenheitTemprature: newVal?.weatherCelsiusTemprature ?? 0,
+    weatherFahrenheitlUnitType: newVal?.weatherFahrenheitlUnitType ?? ''
+    };
+  displayItems.push(newDisplayItem);
+});
+}
+
 </script>
 <template>
     <div class="search-results-card">
         <div class="search-results-card-top-inner">
-            <DestinationDisplay/>
+            <DestinationDisplay :display-items="displayItems"/>
             <AddToFavoriteButton/>           
         </div>        
         <MainForecast :forecast-synopsis="null"/>

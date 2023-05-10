@@ -1,7 +1,8 @@
+import type { ICurrentConditions } from '@/interfaces/interfaces';
 import { defineStore } from 'pinia';
 
 interface State {
-  currentLocationCondition: object | null;
+  currentLocationCondition: ICurrentConditions | null;
 }
 
 export const useCurrentConditionsStore = defineStore('main', {
@@ -9,7 +10,7 @@ export const useCurrentConditionsStore = defineStore('main', {
     currentLocationCondition: null,
   }),
   actions: {
-    setCurrentLocationCondition(condition: object): void {
+    setCurrentLocationCondition(condition: ICurrentConditions): void {
       this.currentLocationCondition = condition;
     },
   },

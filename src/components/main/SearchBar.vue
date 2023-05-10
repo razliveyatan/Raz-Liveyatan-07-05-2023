@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import {getLocationsList, normalizeLocationObject, getLocationConditions, normalizeCurrentConditionsObject} from '../../services/data-helper-service';
+import {getLocationsList, normalizeLocationObject, getLocationConditions, normalizeCurrentConditionsObject, normalizeDestinationObject} from '../../services/data-helper-service';
 import {debounce} from 'lodash';
 import type {ILocation} from '@/interfaces/interfaces';
-import {useCurrentConditionsStore} from '@/stores/conditions-store'
+import { useLocationsStore } from "@/stores/locations-store";
+const currentLocationStore = useLocationsStore();
+const searchResultsVisible = ref(true); 
 
-const currentConditionsStore = useCurrentConditionsStore();
 let input = ref('');
 const cities = ref<ILocation[]>([]);
 
 const getLocationsData = async() => {  
   try {
       if (input.value !== '' && input.value.length >= 2){
+        searchResultsVisible.value = true;
         const response = await getLocationsList(input.value);              
         if (response && response.data){          
           for (let i=0;i<response.data.length;i++){
@@ -38,12 +40,14 @@ const getCurrentLocationConditions = async(city:ILocation) => {
     const response = await getLocationConditions(city.cityKey);
     if (response && response.data){    
       for (let i=0;i<response.data.length;i++){
-            const normalized = normalizeCurrentConditionsObject(response.data[i]);
-            if (normalized){              
-              currentConditionsStore.setCurrentLocationCondition(normalized);
+            const normalized = normalizeDestinationObject(city,response.data[i]);
+            if (normalized){
+              currentLocationStore.setCurrentLocation(null);
+              currentLocationStore.setCurrentLocation(normalized);
             }
           }          
         }
+        searchResultsVisible.value = false;
     }
   }
 
@@ -53,7 +57,7 @@ const getCurrentLocationConditions = async(city:ILocation) => {
 <template>
     <div class="search-container">
         <input type="text" v-model="input" @change="getLocationsData" @input="debouncedFetchData" placeholder="Search Destination..." />
-        <div :class="input !== '' && input.length > 1 ? 'item city' : 'hidden'" v-for="city in cities" :key="city.cityID">
+        <div :class="(input !== '' && input.length > 1) && searchResultsVisible ? 'item city' : 'hidden'" v-for="city in cities" :key="city.cityID">
             <p @click="getCurrentLocationConditions(city)">{{ city.cityName + ', ' + city.countryName + ', ' + city.countryID}}</p>
         </div>
         <div class="item error" v-if="input&&!cities">

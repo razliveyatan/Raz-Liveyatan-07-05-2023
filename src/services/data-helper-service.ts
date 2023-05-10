@@ -1,4 +1,4 @@
-import type { ICurrentConditions, ILocation , IResponse} from "@/interfaces/interfaces";
+import type { ICurrentConditions, IDestinationDisplay, ILocation , IResponse} from "@/interfaces/interfaces";
 import { get } from "./data-service"
 const apiKey = '8n7G4gwBdAgBQsnstXHTEdCAknbUJH7f';
 const language = 'en-us';
@@ -40,4 +40,16 @@ export const normalizeCurrentConditionsObject = (objectToNormalize:any) => {
         weatherFahrenheitTemprature:objectToNormalize.Temperature && objectToNormalize.Temperature.Imperial ? objectToNormalize.Temperature.Imperial.Value : '',
         weatherFahrenheitlUnitType:objectToNormalize.Temperature && objectToNormalize.Temperature.Imperial ? objectToNormalize.Temperature.Imperial.Unit : '',
     } as ICurrentConditions
+}
+
+export const normalizeDestinationObject = (locationObject:any, conditionsObject:any) => {
+    return {
+        cityName:locationObject.cityName && locationObject.cityName !== '' ? locationObject.cityName : '',
+        cityID:locationObject.cityKey && locationObject.cityKey !== '' ? locationObject.cityKey : '',
+        weatherCelsiusTemprature:conditionsObject.Temperature && conditionsObject.Temperature.Metric ? conditionsObject.Temperature.Metric.Value : '',
+        weatherCelsiusUnitType:conditionsObject.Temperature && conditionsObject.Temperature.Metric ? conditionsObject.Temperature.Metric.Unit : '',
+        weatherFahrenheitTemprature:conditionsObject.Temperature && conditionsObject.Temperature.Imperial ? conditionsObject.Temperature.Imperial.Value : '',
+        weatherFahrenheitlUnitType:conditionsObject.Temperature && conditionsObject.Temperature.Imperial ? conditionsObject.Temperature.Imperial.Unit : '',
+        weatherIcon:conditionsObject.WeatherIcon ? `https://developer.accuweather.com/sites/default/files/${conditionsObject.WeatherIcon < 10 ? '0' + conditionsObject.WeatherIcon : conditionsObject.WeatherIcon}-s.png` : '',        
+    } as IDestinationDisplay
 }

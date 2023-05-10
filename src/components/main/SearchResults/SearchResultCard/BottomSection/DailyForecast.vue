@@ -8,7 +8,7 @@ import DayTempratures from './DayTempratures.vue';
     <div class="daily-forecast-cotainer">
         <div class="daily-forecast-item">
             <DayGeneralDetails/>
-            <IconCurrentWeatherVue/>
+            <IconCurrentWeatherVue :icon-url="null"/>
             <DayTempratures/>
         </div>
     </div>

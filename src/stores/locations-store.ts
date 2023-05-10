@@ -1,9 +1,9 @@
-import type { ILocation } from '@/interfaces/interfaces';
+import type { IDestinationDisplay } from '@/interfaces/interfaces';
 import { defineStore } from 'pinia';
 
 interface State {
-  currentLocation: ILocation | null;
-  favoriteLocations:ILocation[];
+  currentLocation: IDestinationDisplay | null;
+  favoriteLocations:IDestinationDisplay[];
 }
 
 export const useLocationsStore = defineStore('main', {
@@ -12,15 +12,15 @@ export const useLocationsStore = defineStore('main', {
     favoriteLocations:[],
   }),
   actions: {
-    setCurrentLocation(location: ILocation): void {
+    setCurrentLocation(location: IDestinationDisplay | null): void {
       this.currentLocation = location;
     },
 
-    addFavoriteLocation(favoriteLocation: ILocation): void {
+    addFavoriteLocation(favoriteLocation: IDestinationDisplay): void {
       this.favoriteLocations.push(favoriteLocation);
     },
 
-    removeFavoriteLocation(location: ILocation): void {
+    removeFavoriteLocation(location: IDestinationDisplay): void {
       const index = this.favoriteLocations.findIndex(
         (favoriteLocation) => favoriteLocation.cityID === location.cityID
       );

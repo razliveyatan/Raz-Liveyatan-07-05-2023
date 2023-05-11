@@ -13,7 +13,7 @@ const props = defineProps<{
     <div class="destination-display-container" :class="{' multiple': props.displayItems.length > 1}">
         <div class="destination-display-item">
             <IconCurrentWeather v-for="displayItem in props.displayItems" :icon-url="displayItem.weatherIcon"/>
-            <DestionationDetailsVue v-for="displayItem in props.displayItems" :city-name="displayItem.cityName" :temprature="displayItem.tempratureValue" :temprtaute-type="displayItem.tempratureValueType" />
+            <DestionationDetailsVue v-for="displayItem in props.displayItems" :city-name="displayItem.cityName" :temperature="displayItem.tempratureValue" :tempertaute-type="displayItem.tempratureValueType" />
         </div>
     </div>
 </template>

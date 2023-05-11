@@ -19,7 +19,7 @@ watch(
       const newDisplayItem: IDestinationDisplay = {
         weatherIcon: location.weatherIcon ?? '',
         cityName: location.cityName ?? '',
-        cityID: location.cityID ?? 0,
+        cityKey: location.cityKey ?? 0,
         tempratureValue:
           defaultTempratureType.value === 'C'
             ? location.weatherCelsiusTemprature

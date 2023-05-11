@@ -1,16 +1,47 @@
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue';
 import IconSupportVue from '@/components/icons/IconSupport.vue';
-import ref from 'vue';
+import {useLocationsStore} from '@/stores/locations-store';
+import { useCurrentConditionsStore } from "@/stores/conditions-store";
+import {normalizeFavoriteObject} from '@/services/data-helper';
+const currentConditionsStore = useCurrentConditionsStore();
+const currentLocationStore = useLocationsStore();
 
-const addToFavorite = () => {
-    console.log('added to favorites');
+onMounted(() => {
+  const location = currentLocationStore.currentLocation;
+  if (location) {
+    const exists = currentLocationStore.isLocationInFavorites(location.cityKey);
+    console.log(exists);
+    addToFavoritesText.value = exists ? 'Remove from Favorites' : 'Add to Favorites';
+  }
+});
+
+const addToFavoritesText = ref('');
+
+const handleFavorite = () => {
+   const location = currentLocationStore.currentLocation;
+   if (location) {
+    const exists = currentLocationStore.isLocationInFavorites(location.cityKey);
+    if (exists){
+        currentLocationStore.removeFavoriteLocation(location.cityKey);
+        addToFavoritesText.value = 'Add to Favorites';
+    }
+    else {
+        const currentLocation = currentConditionsStore.currentLocationCondition;
+        if (currentLocation){
+            const favorite = normalizeFavoriteObject(currentLocation);
+            currentLocationStore.addFavoriteLocation(favorite);
+            addToFavoritesText.value = 'Remove from Favorites';
+        }
+    }
+   }
 }
 
 </script>
 <template>
     <div class="add-to-favorites-container">
         <IconSupportVue/>
-        <button class="add-to-favorites-button" @click="addToFavorite">Add to Favorites</button>
+        <button class="add-to-favorites-button" @click="handleFavorite">{{ addToFavoritesText }}</button>
     </div>
 </template>
 

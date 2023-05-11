@@ -5,7 +5,7 @@ export interface IResponse {
 
 export interface ILocation{
     cityName: string,
-    cityKey:string,    
+    cityKey:number,    
     countryID:string,
     countryName:string,
     cityID:number
@@ -23,11 +23,48 @@ export interface ICurrentConditions {
 export interface IDestinationDisplay {
     weatherIcon: string,
     cityName: string,
-    cityID:number,
+    cityKey:number,
     weatherCelsiusTemprature:any,
     weatherCelsiusUnitType:string,
     weatherFahrenheitTemprature:any,
     weatherFahrenheitlUnitType:string,
     tempratureValue:number,
     tempratureValueType:string
-  }  
+  }
+
+  export interface IFavorite {
+    favoriteForecast:IForecast
+  }
+
+  interface IDailyTemperature {
+    value:number,
+    unit:string,
+  }
+
+  interface ITemperatureMax{
+    temperature:IDailyTemperature
+  }
+
+  interface ITemperatureMin{
+    temperature:IDailyTemperature
+  }
+  
+  interface IDayForecast{
+    weatherIcon: string,
+    weatherIconPhrase:string,    
+  }
+
+   interface IDailyForecast {
+    date:string,
+    day:IDayForecast,
+    night:IDayForecast,
+    minTemperature:ITemperatureMin,
+    maxTemperature:ITemperatureMax
+  }
+
+  export interface IForecast {
+    cityName:string,
+    cityKey:number,
+    isDayTime:boolean,
+    dailyForecast:IDailyForecast[]
+  }

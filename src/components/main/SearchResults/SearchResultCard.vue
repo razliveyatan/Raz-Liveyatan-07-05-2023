@@ -14,13 +14,12 @@ const defaultTempratureType = useDefaultTempratureTypeStore().defaultTempratureT
 const displayItems = reactive<IDestinationDisplay[]>([]);
 
 if (currentLocation){
-    watch(currentLocation, (newVal) => {
-    console.log(defaultTempratureType);
+    watch(currentLocation, (newVal) => {    
   const newDisplayItem: IDestinationDisplay = {    
     weatherIcon: newVal?.weatherIcon ?? '',
     cityName: newVal?.cityName ?? '',
-    cityID:newVal?.cityID ?? 0,
-    tempratureValue: !defaultTempratureType ?  newVal?.weatherCelsiusTemprature : newVal?.weatherFahrenheitTemprature,
+    cityKey:newVal?.cityKey ?? 0,
+    tempratureValue: newVal?.tempratureValue ?? 0,
     tempratureValueType: defaultTempratureType ? defaultTempratureType : 'C',
     weatherCelsiusTemprature: newVal?.weatherCelsiusTemprature ?? 0,
     weatherCelsiusUnitType: newVal?.weatherCelsiusUnitType ?? '',
@@ -38,7 +37,7 @@ if (currentLocation){
             <DestinationDisplay :display-items="displayItems"/>
             <AddToFavoriteButton/>           
         </div>        
-        <MainForecast :forecast-synopsis="null"/>
+        <MainForecast :forecast-synopsis="null"/>   
         <DailyForecast/>
     </div>
 </template>
@@ -54,6 +53,8 @@ if (currentLocation){
     padding: 20px;
     margin-top: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 920px;
+    margin:0 auto;
 }
 
 .search-results-card-top-inner {

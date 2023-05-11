@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import {getLocationsList, normalizeLocationObject, getLocationConditions, normalizeCurrentConditionsObject, normalizeDestinationObject} from '../../services/data-helper-service';
+import {getLocationsList, getLocationConditions, getDailyForecast, setItemInSessionStorage, getItemFromSessionStorage} from '../../services/data-service';
+import {normalizeLocationObject, normalizeDestinationObject, normalizeForecastObject} from '../../services/data-helper';
 import {debounce} from 'lodash';
 import type {ILocation} from '@/interfaces/interfaces';
+
+import { useCurrentConditionsStore } from "@/stores/conditions-store";
 import { useLocationsStore } from "@/stores/locations-store";
+import { useDefaultTempratureTypeStore} from "@/stores/temprature-conversion-store";
+
 const currentLocationStore = useLocationsStore();
+const currentLocationCondition = useCurrentConditionsStore();
+const defaultTempratureType = useDefaultTempratureTypeStore();
 const searchResultsVisible = ref(true); 
 
 let input = ref('');
@@ -13,10 +20,11 @@ const cities = ref<ILocation[]>([]);
 const getLocationsData = async() => {  
   try {
       if (input.value !== '' && input.value.length >= 2){
-        searchResultsVisible.value = true;
-        cities.value = [];
-        const response = await getLocationsList(input.value);              
-        if (response && response.data){          
+        searchResultsVisible.value = true;        
+        const response = getItemFromSessionStorage('cities') != null ? getItemFromSessionStorage('cities') : await getLocationsList(input.value);              
+        if (response && response.data){
+          setItemInSessionStorage('cities',response);
+          cities.value = [];          
           for (let i=0;i<response.data.length;i++){
             const normalized = normalizeLocationObject(response.data[i]);
             if (normalized){              
@@ -38,19 +46,29 @@ const debouncedFetchData = debounce(() => {
 
 const getCurrentLocationConditions = async(city:ILocation) => {
   if (city){
-    const response = await getLocationConditions(city.cityKey);
-    if (response && response.data){    
+    const response = getItemFromSessionStorage('locationConditions') != null ? getItemFromSessionStorage('locationConditions') : await getLocationConditions(city.cityKey);
+    if (response && response.data){ 
+      setItemInSessionStorage('locationConditions',response);
       for (let i=0;i<response.data.length;i++){
-            const normalized = normalizeDestinationObject(city,response.data[i]);
-            if (normalized){
-              currentLocationStore.setCurrentLocation(null);
-              currentLocationStore.setCurrentLocation(normalized);
-            }
+          const normalized = normalizeDestinationObject(city,response.data[i], defaultTempratureType.defaultTempratureType);
+          if (normalized){
+            currentLocationStore.setCurrentLocation(null);
+            currentLocationStore.setCurrentLocation(normalized);
+          }
+        }
+        const forecastResponse = getItemFromSessionStorage('forecastData') != null ? getItemFromSessionStorage('forecastData') : await getDailyForecast(city.cityKey);
+        if (forecastResponse && forecastResponse.data){
+          setItemInSessionStorage('forecastData',forecastResponse);
+          const normalizedForecast = normalizeForecastObject(city, forecastResponse);
+          if (normalizedForecast){
+            currentLocationCondition.setCurrentLocationCondition(null);
+            currentLocationCondition.setCurrentLocationCondition(normalizedForecast);
           }          
         }
-        searchResultsVisible.value = false;
-    }
+      }
+      searchResultsVisible.value = false;
   }
+}
 
 
 </script>

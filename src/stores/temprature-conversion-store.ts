@@ -4,9 +4,9 @@ interface State {
   defaultTempratureType: string | null;
 }
 
-export const useDefaultTempratureTypeStore = defineStore('main', {
+export const useDefaultTempratureTypeStore = defineStore('temperature', {
   state: (): State => ({
-    defaultTempratureType: 'C',
+    defaultTempratureType: "C",
   }),
   actions: {
     setDefaultTempratureType(type: string): void {

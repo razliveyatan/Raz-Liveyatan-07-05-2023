@@ -1,16 +1,16 @@
-import type { ICurrentConditions } from '@/interfaces/interfaces';
+import type {IForecast } from '@/interfaces/interfaces';
 import { defineStore } from 'pinia';
 
 interface State {
-  currentLocationCondition: ICurrentConditions | null;
+  currentLocationCondition: IForecast | null;
 }
 
-export const useCurrentConditionsStore = defineStore('main', {
+export const useCurrentConditionsStore = defineStore('conditions', {
   state: (): State => ({
     currentLocationCondition: null,
   }),
   actions: {
-    setCurrentLocationCondition(condition: ICurrentConditions): void {
+    setCurrentLocationCondition(condition: IForecast | null): void {
       this.currentLocationCondition = condition;
     },
   },

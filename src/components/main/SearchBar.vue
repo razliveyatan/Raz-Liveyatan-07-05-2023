@@ -56,7 +56,7 @@ const getCurrentLocationConditions = async(city:ILocation) => {
             currentLocationStore.setCurrentLocation(normalized);
           }
         }
-        const forecastResponse = getItemFromSessionStorage('forecastData') != null ? getItemFromSessionStorage('forecastData') : await getDailyForecast(city.cityKey);
+        const forecastResponse = getItemFromSessionStorage('forecastData') != null ? getItemFromSessionStorage('forecastData') : await getDailyForecast(city.cityKey, defaultTempratureType.defaultTempratureType === 'C');
         if (forecastResponse && forecastResponse.data){
           setItemInSessionStorage('forecastData',forecastResponse);
           const normalizedForecast = normalizeForecastObject(city, forecastResponse);

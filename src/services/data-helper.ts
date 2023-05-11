@@ -35,42 +35,72 @@ export const normalizeDestinationObject = (locationObject:any, conditionsObject:
     } as IDestinationDisplay
 }
 
-export const normalizeForecastObject = (locationObject:ILocation, forecastObject:any) => {
+export const normalizeForecastObject = (locationObject: ILocation, forecastObject: any) => {
+    debugger;
+    const dailyForecasts = forecastObject.data.DailyForecasts || [];
+    
+    const forecastData = dailyForecasts.map((dailyForecast: any) => ({
+      date: dailyForecast.Date || new Date().toDateString(),
+      minTemperature: {
+        temperature: {
+          value: dailyForecast.Temperature?.Minimum?.Value || 0,
+          unit: dailyForecast.Temperature?.Minimum?.Unit || 'C',
+        },
+      },
+      maxTemperature: {
+        temperature: {
+          value: dailyForecast.Temperature?.Maximum?.Value || 0,
+          unit: dailyForecast.Temperature?.Maximum?.Unit || 'C',
+        },
+      },
+      day: {
+        weatherIcon: dailyForecast.Day?.Icon || '',
+        weatherIconPhrase: dailyForecast.Day?.IconPhrase || '',
+      },
+      night: {
+        weatherIcon: dailyForecast.Night?.Icon || '',
+        weatherIconPhrase: dailyForecast.Night?.IconPhrase || '',
+      },
+    }));
+  
     return {
-        cityName: locationObject.cityName !== '' ? locationObject.cityName : '',
-        cityKey: locationObject.cityKey && locationObject.cityKey > 0 ? locationObject.cityKey : 0,
-        dailyForecast : [{
-            date : forecastObject.DailyForecasts && forecastObject.DailyForecasts.Date ?  forecastObject.DailyForecasts.Date : new Date().toDateString(),
-            minTemperature: {
-                temperature: {
-                    value:forecastObject && forecastObject.Temperature && forecastObject.Temperature.Minimum && forecastObject.Temperature.Minimum.Value ? forecastObject.Temperature.Minimum.Value : 0,                    
-                    unit: forecastObject && forecastObject.Temperature && forecastObject.Temperature.Minimum && forecastObject.Temperature.Minimum.Unit ? forecastObject.Temperature.Minimum.Unit : 'C',                    
-                }
-            },
-            maxTemperature: {
-                temperature: {
-                    value:forecastObject && forecastObject.Temperature && forecastObject.Temperature.Maximum && forecastObject.Temperature.Maximum.Value ? forecastObject.Temperature.Maximum.Value : 0,                    
-                    unit: forecastObject && forecastObject.Temperature && forecastObject.Temperature.Maximum && forecastObject.Temperature.Maximum.Unit ? forecastObject.Temperature.Maximum.Unit : 'C',                    
-                }
-            },
-            day: {
-                weatherIcon:forecastObject && forecastObject.Day && forecastObject.Day.Icon ? forecastObject.Day.Icon : '',
-                weatherIconPhrase: forecastObject && forecastObject.Day && forecastObject.Day.IconPhrase ? forecastObject.Day.IconPhrase : '',
-            },
-            night: {
-                weatherIcon:forecastObject && forecastObject.Day && forecastObject.Day.Icon ? forecastObject.Day.Icon : '',
-                weatherIconPhrase: forecastObject && forecastObject.Day && forecastObject.Day.IconPhrase ? forecastObject.Day.IconPhrase : '',
-            }            
-        }],
-        isDayTime:isDay(),
-    }  as IForecast
-}
+      cityName: locationObject.cityName !== '' ? locationObject.cityName : '',
+      cityKey: locationObject.cityKey && locationObject.cityKey > 0 ? locationObject.cityKey : 0,
+      highLightString:forecastObject.data.Headline ? forecastObject.data.Headline.Text : '',
+      dailyForecast: forecastData,
+      isDayTime: isDay(),
+    } as IForecast;
+  };
 
 export const normalizeFavoriteObject = (forecastObject:IForecast) => {
     return {
         favoriteForecast: forecastObject
     } as IFavorite
 }
+
+export const getDayName = (dateStr:string) =>
+{
+    var date = new Date(dateStr);
+    return date.toLocaleDateString("en-us", { weekday: 'long' });        
+}
+
+export const getDateString = (date:Date | null, isShort:boolean) => {
+    var month = date ? date?.getUTCMonth() + 1 : 0;
+    var day = date?.getUTCDate();
+    var year = date?.getUTCFullYear();
+    return isShort ? day + "/" + month : month + "/" + day + "/" + year;
+}
+
+export const convertToUnit = (unitValue:any , unitType:string|null) =>
+{
+    if (unitType === 'F'){        
+        return unitValue * 9 / 5 + 32;  
+    }
+    else {       
+        return (unitValue - 32) * 5 / 9;  
+    }  
+}
+
 
 const isDay = () =>
 {

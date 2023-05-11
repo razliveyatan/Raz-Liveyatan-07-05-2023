@@ -3,15 +3,21 @@ import DailyForecast from './SearchResultCard/BottomSection/DailyForecast.vue';
 import MainForecast from './SearchResultCard/MainSection/MainForecast.vue';
 import AddToFavoriteButton from './SearchResultCard/TopSection/AddToFavoriteButton.vue';
 import DestinationDisplay from './SearchResultCard/TopSection/DestinationDisplay/DestinationDisplay.vue';
+import type {IDailyForecast} from "@/interfaces/interfaces";
 import { storeToRefs } from 'pinia';
 import {useLocationsStore} from '@/stores/locations-store';
 import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
+import { useCurrentConditionsStore } from '@/stores/conditions-store';
+
 import { reactive, watch } from 'vue';
 import type {IDestinationDisplay} from '@/interfaces/interfaces';
 
 const {currentLocation} = storeToRefs(useLocationsStore());
+const currentConditionsStore = useCurrentConditionsStore();
 const defaultTempratureType = useDefaultTempratureTypeStore().defaultTempratureType;
 const displayItems = reactive<IDestinationDisplay[]>([]);
+const forecastItems = reactive<IDailyForecast[]>([]);
+let highlightText = reactive<any>([]);
 
 if (currentLocation){
     watch(currentLocation, (newVal) => {    
@@ -27,6 +33,13 @@ if (currentLocation){
     weatherFahrenheitlUnitType: newVal?.weatherFahrenheitlUnitType ?? ''
     };
   displayItems.push(newDisplayItem);
+  highlightText = currentConditionsStore.currentLocationCondition?.highLightString;
+  const dailyForecastArray = currentConditionsStore.currentLocationCondition?.dailyForecast;
+  if (dailyForecastArray){
+    dailyForecastArray.forEach((forecast:IDailyForecast) => {
+        forecastItems.push(forecast);
+    })
+  }
 });
 }
 
@@ -37,8 +50,8 @@ if (currentLocation){
             <DestinationDisplay :display-items="displayItems"/>
             <AddToFavoriteButton/>           
         </div>        
-        <MainForecast :forecast-synopsis="null"/>   
-        <DailyForecast/>
+        <MainForecast :forecast-synopsis="highlightText"/>   
+        <DailyForecast :forecasts="forecastItems" :is-day-time="currentConditionsStore.currentLocationCondition?.isDayTime"/>
     </div>
 </template>
 

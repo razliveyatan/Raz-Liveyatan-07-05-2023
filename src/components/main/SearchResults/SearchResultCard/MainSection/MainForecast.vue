@@ -5,8 +5,8 @@ type CityWeatherSynopsisProps = {
 defineProps<CityWeatherSynopsisProps>();
 </script>
 <template>
-    <!-- <h1>{{ forecastSynopsis }}</h1> -->
-    <h1 class="main-forecast-synopsis">Mostly Cloudy</h1>
+     <h1 class="main-forecast-synopsis">{{ forecastSynopsis }}</h1>
+    <!-- <h1 class="main-forecast-synopsis">Mostly Cloudy</h1> -->
 </template>
 
 <style scoped>

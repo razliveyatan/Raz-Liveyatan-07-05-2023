@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import IconSupportVue from '@/components/icons/IconSupport.vue';
 import {useLocationsStore} from '@/stores/locations-store';
 import { useCurrentConditionsStore } from "@/stores/conditions-store";

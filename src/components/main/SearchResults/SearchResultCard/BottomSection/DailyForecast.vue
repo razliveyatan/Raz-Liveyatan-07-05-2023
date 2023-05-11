@@ -2,14 +2,21 @@
 import IconCurrentWeatherVue from '@/components/icons/IconCurrentWeather.vue';
 import DayGeneralDetails from './DayGeneralDetails.vue';
 import DayTempratures from './DayTempratures.vue';
+import type { IDailyForecast } from '@/interfaces/interfaces';
+
+type forecastProps = {
+    forecasts: IDailyForecast[] | null;
+    isDayTime:boolean | undefined
+}
+defineProps<forecastProps>();
 
 </script>
 <template>
     <div class="daily-forecast-cotainer">
-        <div class="daily-forecast-item">
-            <DayGeneralDetails/>
-            <IconCurrentWeatherVue :icon-url="null"/>
-            <DayTempratures/>
+        <div class="daily-forecast-item" v-for="forecast in forecasts">
+            <DayGeneralDetails :date="forecast.date"/>
+            <IconCurrentWeatherVue :icon-url="isDayTime ? forecast.day.weatherIcon : forecast.night.weatherIcon"/>
+            <DayTempratures :min-temperature="forecast.minTemperature.temperature" :max-temperature="forecast.maxTemperature.temperature"/>
         </div>
     </div>
 </template>

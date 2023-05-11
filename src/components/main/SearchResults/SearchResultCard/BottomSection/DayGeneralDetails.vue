@@ -1,7 +1,14 @@
+<script setup lang="ts">
+import {getDayName, getDateString} from "@/services/data-helper";
+type dateProps = {
+    date: any | null;
+}
+defineProps<dateProps>()
+</script>
 <template>
     <h2 class="daily-general-details-container">
-        <span class="day-name">Tuesday</span>
-        <span class="day-date">09/05</span>
+        <span class="day-name">{{ getDayName(getDateString(date,false)) }}</span>
+        <span class="day-date">{{getDateString(date,true)}}</span>
     </h2>
 </template>
 

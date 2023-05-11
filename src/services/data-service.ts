@@ -22,12 +22,12 @@ export const getLocationConditions = async(locationKey:number):Promise<IResponse
     return get (`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`,data);
 }
 
-export const getDailyForecast = async(locationKey:number):Promise<IResponse> => {
+export const getDailyForecast = async(locationKey:number, isMetric:boolean):Promise<IResponse> => {
     const data = {
         apikey:apiKey,
         language:language,
         details:false,
-        mertric:false,        
+        mertric:isMetric,        
     }
     return get (`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`,data);
 }

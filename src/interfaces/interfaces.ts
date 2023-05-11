@@ -36,7 +36,7 @@ export interface IDestinationDisplay {
     favoriteForecast:IForecast
   }
 
-  interface IDailyTemperature {
+  export interface IDailyTemperature {
     value:number,
     unit:string,
   }
@@ -54,7 +54,7 @@ export interface IDestinationDisplay {
     weatherIconPhrase:string,    
   }
 
-   interface IDailyForecast {
+   export interface IDailyForecast {
     date:string,
     day:IDayForecast,
     night:IDayForecast,
@@ -65,6 +65,7 @@ export interface IDestinationDisplay {
   export interface IForecast {
     cityName:string,
     cityKey:number,
+    highLightString:string,
     isDayTime:boolean,
     dailyForecast:IDailyForecast[]
   }

@@ -1,7 +1,27 @@
+<script setup lang="ts">
+import {watch} from 'vue';
+import { storeToRefs } from 'pinia';
+import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
+import type {IDailyTemperature} from '@/interfaces/interfaces';
+import {convertToUnit} from '@/services/data-helper';
+const {defaultTempratureType} = storeToRefs(useDefaultTempratureTypeStore());
+
+type temperatureProps = {
+    maxTemperature:IDailyTemperature,
+    minTemperature:IDailyTemperature,
+}
+defineProps<temperatureProps>();
+watch(defaultTempratureType, (newVal) => { 
+    defaultTempratureType: newVal;
+});
+
+
+
+</script>
 <template>
     <div class="daily-temprature-container">
-        <span class="high">24°</span>
-        <span class="low">/17°</span>
+        <span class="high">{{defaultTempratureType === maxTemperature.unit ? maxTemperature.value : convertToUnit(maxTemperature.value,defaultTempratureType) }}°</span>
+        <span class="low">/{{defaultTempratureType === minTemperature.unit ? minTemperature.value : convertToUnit(minTemperature.value,defaultTempratureType) }}°</span>
     </div>
 </template>
 

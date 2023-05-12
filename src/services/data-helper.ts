@@ -54,11 +54,11 @@ export const normalizeForecastObject = (locationObject: ILocation, forecastObjec
         },
       },
       day: {
-        weatherIcon: dailyForecast.Day?.Icon || '',
+        weatherIcon: dailyForecast.Day?.Icon ? `https://developer.accuweather.com/sites/default/files/${dailyForecast.Day?.Icon < 10 ? '0' + dailyForecast.Day?.Icon : dailyForecast.Day?.Icon}-s.png` : '',
         weatherIconPhrase: dailyForecast.Day?.IconPhrase || '',
       },
       night: {
-        weatherIcon: dailyForecast.Night?.Icon || '',
+        weatherIcon: dailyForecast.Night?.Icon ? `https://developer.accuweather.com/sites/default/files/${dailyForecast.Night?.Icon < 10 ? '0' + dailyForecast.Night?.Icon : dailyForecast.Night?.Icon}-s.png` : '',
         weatherIconPhrase: dailyForecast.Night?.IconPhrase || '',
       },
     }));
@@ -94,10 +94,10 @@ export const getDateString = (date:Date | null, isShort:boolean) => {
 export const convertToUnit = (unitValue:any , unitType:string|null) =>
 {
     if (unitType === 'F'){        
-        return unitValue * 9 / 5 + 32;  
+        return Math.floor(unitValue * 9 / 5 + 32);  
     }
     else {       
-        return (unitValue - 32) * 5 / 9;  
+        return Math.floor((unitValue - 32) * 5 / 9);  
     }  
 }
 

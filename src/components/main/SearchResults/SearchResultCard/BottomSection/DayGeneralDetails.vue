@@ -5,10 +5,11 @@ type dateProps = {
 }
 defineProps<dateProps>()
 </script>
+
 <template>
     <h2 class="daily-general-details-container">
-        <span class="day-name">{{ getDayName(getDateString(date,false)) }}</span>
-        <span class="day-date">{{getDateString(date,true)}}</span>
+        <span class="day-name">{{ getDayName(getDateString(new Date(date),false)) }}</span>
+        <span class="day-date">{{getDateString(new Date(date),true)}}</span>
     </h2>
 </template>
 

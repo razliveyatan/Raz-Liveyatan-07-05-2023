@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TempConversionButton from '@/components/nav/TempConversionButton.vue';
 
 </script>
 
@@ -7,7 +8,7 @@
         <nav>
           <RouterLink to="/Main"><button>Main</button></RouterLink>
           <RouterLink to="/Favorites"><button>Favorites</button></RouterLink>         
-          <button>°C / °F</button>
+          <TempConversionButton/>          
           <button class="theme-toggle">Theme</button>
         </nav>           
       <RouterView />
@@ -16,8 +17,7 @@
 
 <style scoped>
 .wrapper {
-  width:100%;
- 
+  width:100%; 
 }
 
 nav {

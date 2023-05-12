@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {watch} from 'vue';
+import {watch, reactive} from 'vue';
 import { storeToRefs } from 'pinia';
 import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
 import type {IDailyTemperature} from '@/interfaces/interfaces';
 import {convertToUnit} from '@/services/data-helper';
 const {defaultTempratureType} = storeToRefs(useDefaultTempratureTypeStore());
+let temperature = reactive<any>([]); 
 
 type temperatureProps = {
     maxTemperature:IDailyTemperature,
@@ -12,16 +13,14 @@ type temperatureProps = {
 }
 defineProps<temperatureProps>();
 watch(defaultTempratureType, (newVal) => { 
-    defaultTempratureType: newVal;
+    temperature: newVal;
 });
-
-
 
 </script>
 <template>
     <div class="daily-temprature-container">
-        <span class="high">{{defaultTempratureType === maxTemperature.unit ? maxTemperature.value : convertToUnit(maxTemperature.value,defaultTempratureType) }}°</span>
-        <span class="low">/{{defaultTempratureType === minTemperature.unit ? minTemperature.value : convertToUnit(minTemperature.value,defaultTempratureType) }}°</span>
+        <span class="high">{{temperature === maxTemperature.unit ? maxTemperature.value : convertToUnit(maxTemperature.value,defaultTempratureType) }}°</span>
+        <span class="low">/{{temperature === minTemperature.unit ? minTemperature.value : convertToUnit(minTemperature.value,defaultTempratureType) }}°</span>
     </div>
 </template>
 

@@ -2,9 +2,6 @@
 import { ref, onMounted } from 'vue';
 import IconSupportVue from '@/components/icons/IconSupport.vue';
 import {useLocationsStore} from '@/stores/locations-store';
-import { useCurrentConditionsStore } from "@/stores/conditions-store";
-import {normalizeFavoriteObject} from '@/services/data-helper';
-const currentConditionsStore = useCurrentConditionsStore();
 const currentLocationStore = useLocationsStore();
 
 onMounted(() => {
@@ -25,13 +22,9 @@ const handleFavorite = () => {
         currentLocationStore.removeFavoriteLocation(location.cityKey);
         addToFavoritesText.value = 'Add to Favorites';
     }
-    else {
-        const currentLocation = currentConditionsStore.currentLocationCondition;
-        if (currentLocation){
-            const favorite = normalizeFavoriteObject(currentLocation);
-            currentLocationStore.addFavoriteLocation(favorite);
-            addToFavoritesText.value = 'Remove from Favorites';
-        }
+    else {        
+        currentLocationStore.addFavoriteLocation(location);
+        addToFavoritesText.value = 'Remove from Favorites';        
     }
    }
 }

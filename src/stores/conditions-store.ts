@@ -2,16 +2,17 @@ import type {IForecast } from '@/interfaces/interfaces';
 import { defineStore } from 'pinia';
 
 interface State {
-  currentLocationCondition: IForecast | null;
+  currentLocationForecast: IForecast | null;
 }
 
 export const useCurrentConditionsStore = defineStore('conditions', {
   state: (): State => ({
-    currentLocationCondition: null,
+    currentLocationForecast: null,  
+    
   }),
   actions: {
-    setCurrentLocationCondition(condition: IForecast | null): void {
-      this.currentLocationCondition = condition;
-    },
+    setCurrentLocationForecast(forecast: IForecast | null): void {
+      this.currentLocationForecast = forecast;
+    },  
   },
 });

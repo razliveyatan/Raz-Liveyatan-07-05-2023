@@ -30,6 +30,7 @@ export const normalizeDestinationObject = (locationObject:any, conditionsObject:
         weatherFahrenheitTemprature:conditionsObject.Temperature && conditionsObject.Temperature.Imperial ? conditionsObject.Temperature.Imperial.Value : '',
         weatherFahrenheitlUnitType:conditionsObject.Temperature && conditionsObject.Temperature.Imperial ? conditionsObject.Temperature.Imperial.Unit : '',
         weatherIcon:conditionsObject.WeatherIcon ? `https://developer.accuweather.com/sites/default/files/${conditionsObject.WeatherIcon < 10 ? '0' + conditionsObject.WeatherIcon : conditionsObject.WeatherIcon}-s.png` : '',
+        WeatherText:conditionsObject.WeatherText !== '' ? conditionsObject.WeatherText : '',
         tempratureValueType: tempratureType !== '' ? tempratureType : 'C',
         tempratureValue: tempratureType === 'C' ? conditionsObject.Temperature.Metric.Value : conditionsObject.Temperature.Imperial.Value,             
     } as IDestinationDisplay

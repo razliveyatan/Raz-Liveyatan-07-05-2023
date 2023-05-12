@@ -12,7 +12,7 @@ const handleTemperatueTypeConversion = () => {
    const temperature = defaultTemparature.defaultTempratureType;   
    chosenTemperature.value = temperature === 'C' ? 'F' : 'C';
    defaultTemparature.setDefaultTempratureType(chosenTemperature.value);
-}
+} 
 </script>
 
 <template>

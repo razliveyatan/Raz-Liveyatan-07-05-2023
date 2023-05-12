@@ -4,7 +4,7 @@ import DestionationDetailsVue from './DestionationDetails.vue'
 import type { IDestinationDisplay } from '@/interfaces/interfaces';
 
 const props = defineProps<{
-  displayItems: IDestinationDisplay[];
+  displayItems: IDestinationDisplay[];  
 }>();
 
 </script>

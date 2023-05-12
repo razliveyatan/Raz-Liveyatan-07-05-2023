@@ -1,9 +1,9 @@
-import type { IDestinationDisplay, IFavorite } from '@/interfaces/interfaces';
+import type { IDestinationDisplay } from '@/interfaces/interfaces';
 import { defineStore } from 'pinia';
 
 interface State {
   currentLocation: IDestinationDisplay | null;
-  favoriteLocations:IFavorite[];
+  favoriteLocations:IDestinationDisplay[];
 }
 
 export const useLocationsStore = defineStore('locations', {
@@ -16,19 +16,19 @@ export const useLocationsStore = defineStore('locations', {
       this.currentLocation = location;
     },
 
-    addFavoriteLocation(favoriteLocation: IFavorite): void {
+    addFavoriteLocation(favoriteLocation: IDestinationDisplay): void {
       this.favoriteLocations.push(favoriteLocation);
     },
 
     removeFavoriteLocation(cityKey: number): void {
       const index = this.favoriteLocations.findIndex(
-        (favoriteLocation) => favoriteLocation.favoriteForecast.cityKey === cityKey);
+        (favoriteLocation) => favoriteLocation.cityKey === cityKey);
       if (index !== -1) {
         this.favoriteLocations.splice(index, 1);
       }
     },    
     isLocationInFavorites(cityKey:number) : boolean {
-      return this.favoriteLocations.some(favorite => favorite.favoriteForecast.cityKey === cityKey);
+      return this.favoriteLocations.some(favorite => favorite.cityKey === cityKey);
     }
   },
 });

@@ -22,6 +22,7 @@ export interface ICurrentConditions {
 
 export interface IDestinationDisplay {
     weatherIcon: string,
+    WeatherText:string,
     cityName: string,
     cityKey:number,
     weatherCelsiusTemprature:any,

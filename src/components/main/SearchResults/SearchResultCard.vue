@@ -33,8 +33,8 @@ if (currentLocation){
     weatherFahrenheitlUnitType: newVal?.weatherFahrenheitlUnitType ?? ''
     };
   displayItems.push(newDisplayItem);
-  highlightText = currentConditionsStore.currentLocationCondition?.highLightString;
-  const dailyForecastArray = currentConditionsStore.currentLocationCondition?.dailyForecast;
+  highlightText = currentConditionsStore.currentLocationForecast?.highLightString;
+  const dailyForecastArray = currentConditionsStore.currentLocationForecast?.dailyForecast;
   if (dailyForecastArray){
     dailyForecastArray.forEach((forecast:IDailyForecast) => {
         forecastItems.push(forecast);
@@ -51,7 +51,7 @@ if (currentLocation){
             <AddToFavoriteButton/>           
         </div>        
         <MainForecast :forecast-synopsis="highlightText"/>   
-        <DailyForecast :forecasts="forecastItems" :is-day-time="currentConditionsStore.currentLocationCondition?.isDayTime"/>
+        <DailyForecast :forecasts="forecastItems" :is-day-time="currentConditionsStore.currentLocationForecast?.isDayTime"/>
     </div>
 </template>
 

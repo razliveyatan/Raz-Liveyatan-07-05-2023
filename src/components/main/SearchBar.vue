@@ -10,7 +10,7 @@ import { useLocationsStore } from "@/stores/locations-store";
 import { useDefaultTempratureTypeStore} from "@/stores/temprature-conversion-store";
 
 const currentLocationStore = useLocationsStore();
-const currentLocationCondition = useCurrentConditionsStore();
+const currentLocationForecast = useCurrentConditionsStore();
 const defaultTempratureType = useDefaultTempratureTypeStore();
 const searchResultsVisible = ref(true); 
 
@@ -61,8 +61,8 @@ const getCurrentLocationConditions = async(city:ILocation) => {
           setItemInSessionStorage('forecastData',forecastResponse);
           const normalizedForecast = normalizeForecastObject(city, forecastResponse);
           if (normalizedForecast){
-            currentLocationCondition.setCurrentLocationCondition(null);
-            currentLocationCondition.setCurrentLocationCondition(normalizedForecast);
+            currentLocationForecast.setCurrentLocationForecast(null);
+            currentLocationForecast.setCurrentLocationForecast(normalizedForecast);
           }          
         }
       }

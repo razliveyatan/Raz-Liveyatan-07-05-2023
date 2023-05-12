@@ -1,50 +1,59 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { IDestinationDisplay } from '@/interfaces/interfaces';
-import DestinationDisplay from '@/components/main/SearchResults/SearchResultCard/TopSection/DestinationDisplay/DestinationDisplay.vue';
 import {useLocationsStore} from '@/stores/locations-store';
 import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
+import FavoritesDisplay from '@/components/favorites/FavoritesDisplay.vue';
 
 const displayItems = ref<IDestinationDisplay[]>([]);
 
-const {favoriteLocations} = storeToRefs(useLocationsStore());
+const locationsStore = useLocationsStore();
+
 const {defaultTempratureType} = storeToRefs(useDefaultTempratureTypeStore());
 
-watch(
-  () => favoriteLocations.value,
-  (newVal) => {
-    displayItems.value.splice(0, displayItems.value.length); // Clear the displayItems array
-    newVal.forEach((location) => {
-      const newDisplayItem: IDestinationDisplay = {
+onMounted(() => {  
+  const favoriteLocations = locationsStore.favoriteLocations;
+  if (favoriteLocations.length > 0) {    
+    displayItems.value = favoriteLocations.map((location) => {
+      return {
         weatherIcon: location.weatherIcon ?? '',
+        WeatherText: location.WeatherText ?? '',
         cityName: location.cityName ?? '',
         cityKey: location.cityKey ?? 0,
         tempratureValue:
           defaultTempratureType.value === 'C'
             ? location.weatherCelsiusTemprature
             : location.weatherFahrenheitTemprature,
-        tempratureValueType:defaultTempratureType.value ? defaultTempratureType.value : 'C',
+        tempratureValueType: defaultTempratureType.value ?? 'C',
         weatherCelsiusTemprature: location.weatherCelsiusTemprature ?? 0,
         weatherCelsiusUnitType: location.weatherCelsiusUnitType ?? '',
         weatherFahrenheitTemprature: location.weatherFahrenheitTemprature ?? 0,
         weatherFahrenheitlUnitType: location.weatherFahrenheitlUnitType ?? '',
       };
-      displayItems.value.push(newDisplayItem);
     });
   }
-);</script>
+});
+</script>
 <template>
-    <DestinationDisplay :display-items="displayItems"/>
+  <div class="favorites-container">
+    <FavoritesDisplay v-if="displayItems && displayItems.length > 0" :display-items="displayItems"/>
+    <p v-if="!displayItems || displayItems.length === 0">No Favorite Locations Chosen</p>
+  </div>
   </template>
   
   <style>
-  @media (min-width: 1024px) {
-    .about {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-  }
+.favorites-container {    
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 920px;
+    margin: 2rem auto;
+}
+.favorites-container p {
+  text-align: center;
+}
   </style>
   

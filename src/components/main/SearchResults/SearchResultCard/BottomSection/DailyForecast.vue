@@ -13,7 +13,7 @@ defineProps<forecastProps>();
 </script>
 <template>
     <div class="daily-forecast-cotainer">
-        <div class="daily-forecast-item" v-for="forecast in forecasts">
+        <div class="daily-forecast-item" :class="{'show': forecast }" v-for="forecast in forecasts" :key="forecast.date.toString()">
             <DayGeneralDetails :date="forecast.date"/>
             <IconCurrentWeatherVue :icon-url="isDayTime ? forecast.day.weatherIcon : forecast.night.weatherIcon"/>
             <DayTempratures :min-temperature="forecast.minTemperature.temperature" :max-temperature="forecast.maxTemperature.temperature"/>
@@ -23,30 +23,24 @@ defineProps<forecastProps>();
 
 <style scoped>
 .daily-forecast-cotainer {
-    display:grid;
-    gap: 3rem;
-    grid-template-columns: repeat(1,minmax(0,1fr));    
-}
-@media (min-width: 1024px)
-    {
-        .daily-forecast-cotainer {
-        grid-template-columns: repeat(3,minmax(0,1fr));
-    }
-}
-
-@media (min-width: 768px){
-    .daily-forecast-cotainer {
-        grid-template-columns: repeat(2,minmax(0,1fr));
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .daily-forecast-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 1rem;
-    padding: 2rem;
-    border: 1px solid gray;
-    width: 175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.daily-forecast-item.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

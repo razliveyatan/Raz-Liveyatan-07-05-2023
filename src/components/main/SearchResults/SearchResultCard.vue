@@ -23,6 +23,7 @@ if (currentLocation){
     watch(currentLocation, (newVal) => {    
   const newDisplayItem: IDestinationDisplay = {    
     weatherIcon: newVal?.weatherIcon ?? '',
+    WeatherText: newVal?.WeatherText ?? '',
     cityName: newVal?.cityName ?? '',
     cityKey:newVal?.cityKey ?? 0,
     tempratureValue: newVal?.tempratureValue ?? 0,
@@ -55,15 +56,40 @@ if (currentLocation){
     </div>
 </template>
 
+
 <style scoped>
-.hidden {
+.search-results-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.search-results-card-top-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+/* .hidden {
     display: none;
 }
 
 .search-results-card {
     background-color: #f5f5f5;
     border-radius: 10px;
-    padding: 20px;
+  padding: 20px;
     margin-top: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     max-width: 920px;
@@ -71,12 +97,12 @@ if (currentLocation){
 }
 
 .search-results-card-top-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
-}
+} */
 /* .search-results-card {
     background-color:cornsilk;
     border: 1px black solid;

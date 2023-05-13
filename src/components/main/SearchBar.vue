@@ -74,19 +74,91 @@ const getCurrentLocationConditions = async(city:ILocation) => {
 </script>
 
 <template>
-    <div class="search-container">
-        <input type="text" v-model="input" @change="getLocationsData" @input="debouncedFetchData" placeholder="Search Destination..." />
-        <div :class="(input !== '' && input.length > 1) && searchResultsVisible ? 'item city' : 'hidden'" v-for="city in cities" :key="city.cityID">
-            <p @click="getCurrentLocationConditions(city)">{{ city.cityName + ', ' + city.countryName + ', ' + city.countryID}}</p>
-        </div>
-        <div class="item error" v-if="input&&!cities">
-            <p>No results found!</p>
-        </div>
+  <div class="search-container">
+    <input type="text" v-model="input" @change="getLocationsData" @input="debouncedFetchData" placeholder="Search Destination..." />
+    <div class="search-results" v-if="input !== '' && input.length > 1 && searchResultsVisible">
+      <div class="city-item" v-for="city in cities" :key="city.cityID" @click="getCurrentLocationConditions(city)">
+        <p>{{ city.cityName + ', ' + city.countryName + ', ' + city.countryID}}</p>
+      </div>
+      <div class="item error" v-if="input && !cities">
+        <p>No results found!</p>
+      </div>
     </div>
- </template>
+  </div>
+</template>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+<style scoped>
+.search-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.search-container .item.city {
+  background-color: #fff;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-container .item.city p {
+  margin: 0;
+  padding: 5px;
+}
+
+.search-container .item.city.show {
+  opacity: 1;
+}
+
+.search-container .item.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-container .item.error.show {
+  opacity: 1;
+}
+
+/* .search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.item.city {
+  padding: 10px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.item.error {
+  color: red;
+} */
+
+/* @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 * {
   padding: 0;
@@ -139,5 +211,5 @@ input {
 
 .hidden {
   display: none;
-}
+} */
 </style>

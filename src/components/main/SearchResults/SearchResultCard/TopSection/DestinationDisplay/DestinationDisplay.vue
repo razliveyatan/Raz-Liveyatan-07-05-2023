@@ -10,42 +10,38 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="destination-display-container" :class="{' multiple': props.displayItems.length > 1}">
-        <div class="destination-display-item">
-            <IconCurrentWeather v-for="displayItem in props.displayItems" :icon-url="displayItem.weatherIcon"/>
-            <DestionationDetailsVue v-for="displayItem in props.displayItems" :city-name="displayItem.cityName" :temperature="displayItem.tempratureValue" :tempertaute-type="displayItem.tempratureValueType" />
-        </div>
+    <div class="destination-display-container" :class="{'multiple': props.displayItems.length > 1}">
+      <div class="destination-display-item" v-for="displayItem in props.displayItems" :key="displayItem.cityKey">
+        <IconCurrentWeather :icon-url="displayItem.weatherIcon" />
+        <DestionationDetailsVue
+          :city-name="displayItem.cityName"
+          :temperature="displayItem.tempratureValue"
+          :temperature-type="displayItem.tempratureValueType" :tempertaute-type="displayItem.tempratureValueType"
+        />
+      </div>
     </div>
-</template>
+  </template>
 
 <style scoped>
-/* .destination-display-container{
-   display: grid;
-   gap:3rem;
-   grid-template-columns: repeat(1,minmax(0,1fr));    
-} */
-.multiple{   
-   grid-template-columns: repeat(2,minmax(0,1fr));    
-}
-@media (min-width: 1024px)
-    {      
-        .multiple {
-            grid-template-columns: repeat(3,minmax(0,1fr));  
-        }
-   
+.destination-display-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-@media (min-width: 768px){
-    .multiple {
-        grid-template-columns: repeat(2,minmax(0,1fr));
-    }
+.destination-display-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* .destination-display-item {
-    border: 1px solid gray;
-    border-radius: 1rem;
-    height: 100px;
-    padding: 0 1rem;
-    display: flex;
-} */
+.destination-display-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>

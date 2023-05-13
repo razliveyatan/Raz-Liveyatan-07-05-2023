@@ -95,7 +95,7 @@ export const getDateString = (date:Date | null, isShort:boolean) => {
 export const convertToUnit = (unitValue:any , unitType:string|null) =>
 {
     if (unitType === 'F'){        
-        return Math.floor(unitValue * 9 / 5 + 32);  
+        return Math.floor((unitValue * 9 / 5) + 32);  
     }
     else {       
         return Math.floor((unitValue - 32) * 5 / 9);  

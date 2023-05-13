@@ -4,9 +4,30 @@ import SearchBar from '../components/main/SearchBar.vue'
 </script>
 
 <template>
-  <div>      
+  <div class="main-view">      
     <SearchBar/>
     <SearchResultCard/>
   </div>    
 </template> 
+
+<style scoped>
+/* .main-view {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-view > * {
+  margin-bottom: 20px;
+} */
+
+.main-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
 

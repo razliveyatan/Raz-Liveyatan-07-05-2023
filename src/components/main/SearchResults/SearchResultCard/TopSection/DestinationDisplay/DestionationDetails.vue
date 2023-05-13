@@ -6,17 +6,22 @@ defineProps<{
 }>();
 </script>
 <template>
-    <div class="destination-details-container">
-        <p>{{cityName}}</p>
-        <p>{{temperature}}°{{ tempertauteType }}</p>
+    <div class="destination-details-container" :class="{ 'show': cityName !== ''}">
+        <p class="city-name">{{cityName}}</p>
+        <p class="temperature">{{temperature}}°{{ tempertauteType }}</p>
     </div>
 </template>
 
 <style scoped>
 .destination-details-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    margin-left:1rem;
+  margin-left: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.destination-details-container.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

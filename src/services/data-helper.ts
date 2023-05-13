@@ -6,7 +6,7 @@ export const normalizeLocationObject = (objectToNormalize:any) => {
         cityKey:objectToNormalize.Key && objectToNormalize.Key !== '' ? objectToNormalize.Key : '',
         countryID: objectToNormalize.Country ? objectToNormalize.Country.ID : '',
         countryName:objectToNormalize.Country ? objectToNormalize.Country.LocalizedName : '',        
-        cityID: objectToNormalize.AdministrativeArea && objectToNormalize.AdministrativeArea.ID ? objectToNormalize.AdministrativeArea.ID : 0
+        AreaID: objectToNormalize.AdministrativeArea && objectToNormalize.AdministrativeArea.ID ? objectToNormalize.AdministrativeArea.ID : 0
     } as ILocation
 }
 
@@ -36,8 +36,7 @@ export const normalizeDestinationObject = (locationObject:any, conditionsObject:
     } as IDestinationDisplay
 }
 
-export const normalizeForecastObject = (locationObject: ILocation, forecastObject: any) => {
-    debugger;
+export const normalizeForecastObject = (locationObject: ILocation, forecastObject: any) => {    
     const dailyForecasts = forecastObject.data.DailyForecasts || [];
     
     const forecastData = dailyForecasts.map((dailyForecast: any) => ({
@@ -94,9 +93,9 @@ export const getDateString = (date:Date | null, isShort:boolean) => {
 
 export const convertToUnit = (unitValue:any , unitType:string|null) =>
 {
-    if (unitType === 'F'){        
-        return Math.floor((unitValue * 9 / 5) + 32);  
-    }
+     if (unitType === 'F'){        
+        return unitValue;
+     }
     else {       
         return Math.floor((unitValue - 32) * 5 / 9);  
     }  

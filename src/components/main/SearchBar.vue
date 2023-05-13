@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import {getLocationsList, getLocationConditions, getDailyForecast, setItemInSessionStorage, getItemFromSessionStorage} from '../../services/data-service';
 import {normalizeLocationObject, normalizeDestinationObject, normalizeForecastObject} from '../../services/data-helper';
-import {debounce} from 'lodash';
+import _, {debounce} from 'lodash';
 import type {ILocation} from '@/interfaces/interfaces';
+import {toast} from 'vue3-toastify';
 
 import { useCurrentConditionsStore } from "@/stores/conditions-store";
 import { useLocationsStore } from "@/stores/locations-store";
@@ -35,7 +36,10 @@ const getLocationsData = async() => {
       }
   }
   catch (error) {
-  console.error(error); //TODO: Error Handling
+    console.error(error);     
+    toast.error('An error occured while fetching locations' + error, {
+      autoClose:1000,
+    });
 }
   return {cities};
 }
@@ -46,8 +50,9 @@ const debouncedFetchData = debounce(() => {
 
 const getCurrentLocationConditions = async(city:ILocation) => {
   if (city){
-    const response = getItemFromSessionStorage('locationConditions') != null ? getItemFromSessionStorage('locationConditions') : await getLocationConditions(city.cityKey);
-    if (response && response.data){ 
+    try {
+      const response = getItemFromSessionStorage('locationConditions') != null ? getItemFromSessionStorage('locationConditions') : await getLocationConditions(city.cityKey);
+      if (response && response.data){ 
       setItemInSessionStorage('locationConditions',response);
       for (let i=0;i<response.data.length;i++){
           const normalized = normalizeDestinationObject(city,response.data[i], defaultTempratureType.defaultTempratureType);
@@ -67,8 +72,32 @@ const getCurrentLocationConditions = async(city:ILocation) => {
         }
       }
       searchResultsVisible.value = false;
+    }
+    catch(error){
+      console.error(error);     
+      toast.error('An error occured while fetching current location conditions' + error, {
+      autoClose:1000,
+    });
+    }    
   }
 }
+
+onMounted(() =>{
+  const location = currentLocationStore.currentLocation;
+  const city = {
+    cityName: location?.cityName,
+    cityKey:location?.cityKey        
+  } as ILocation
+  if (city){
+    getCurrentLocationConditions(city)
+    .catch(error => {
+        console.error(error);
+        toast.error('An error occurred while fetching current location conditions: ' + error, {
+          autoClose: 1000,
+        });
+      });
+    }  
+});
 
 
 </script>
@@ -83,7 +112,7 @@ const getCurrentLocationConditions = async(city:ILocation) => {
       <div class="item error" v-if="input && !cities">
         <p>No results found!</p>
       </div>
-    </div>
+    </div>    
   </div>
 </template>
 

@@ -16,7 +16,7 @@ const handleTemperatueTypeConversion = () => {
 </script>
 
 <template>
-    <button type="button" @click="handleTemperatueTypeConversion">
+    <button id="unit-toggle" type="button" @click="handleTemperatueTypeConversion">
         <span :class="{ bold: chosenTemperature === 'C' }">°C</span>
         <span> / </span>
         <span :class="{ bold: chosenTemperature === 'F' }">°F</span>

@@ -8,7 +8,7 @@ export interface ILocation{
     cityKey:number,    
     countryID:string,
     countryName:string,
-    cityID:number
+    AreaID:number
 }
 
 export interface ICurrentConditions {

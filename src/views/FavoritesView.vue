@@ -7,9 +7,7 @@ import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-stor
 import FavoritesDisplay from '@/components/favorites/FavoritesDisplay.vue';
 
 const displayItems = ref<IDestinationDisplay[]>([]);
-
 const locationsStore = useLocationsStore();
-
 const {defaultTempratureType} = storeToRefs(useDefaultTempratureTypeStore());
 
 onMounted(() => {  
@@ -34,6 +32,7 @@ onMounted(() => {
     });
   }
 });
+
 </script>
 <template>
   <div class="favorites-container">
@@ -42,7 +41,7 @@ onMounted(() => {
   </div>
   </template>
   
-  <style>
+<style scoped>
 .favorites-container {    
     background-color: #f5f5f5;
     border-radius: 10px;

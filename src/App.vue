@@ -1,46 +1,70 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import TempConversionButton from '@/components/nav/TempConversionButton.vue';
+const isMenuOpen = ref(false);
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
 
 </script>
 
 <template> 
-    <div class="wrapper">                    
-        <nav>
-          <RouterLink to="/Main"><button>Main</button></RouterLink>
-          <RouterLink to="/Favorites"><button>Favorites</button></RouterLink>         
-          <TempConversionButton/>          
-          <button class="theme-toggle">Theme</button>
-        </nav>           
-      <RouterView />
-    </div>  
+    <div class="wrapper">                          
+        <nav :class="{active : isMenuOpen}">
+          <div class="no-toggle">
+            <RouterLink to="/Main"><button>Main</button></RouterLink>
+            <RouterLink to="/Favorites"><button>Favorites</button></RouterLink>          
+          </div>
+          <div class="menu-toggle" :class="{active : isMenuOpen}">
+            <TempConversionButton/>          
+            <button id="theme-toggle">Theme</button>
+            <button id="hamburger-toggle" @click="toggleMenu" class="hamburger-toggle">☰</button>          
+          </div>
+        </nav>
+      <RouterView />                 
+    </div>      
 </template>
 
 <style scoped>
 .wrapper {
-  width:100%; 
+  /* width:100%;  */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-nav {
-  background-color: #fff;
-  padding: 10px;
+nav {  
   display: flex;
-  justify-content: end;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 0 #64b3c9;
+    /* padding: 10px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    box-shadow: 0 2px 0 #64b3c9; */
+}
+
+.menu-toggle {
+  display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: flex-end;
 }
 
 nav button {
   background-color: transparent;
   border: none;
-  color: #555;
+  color: #FFFFFF;
   font-size: 16px;
   padding: 8px 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  /* transition: background-color 0.1s ease; */
 }
 
 nav button:hover {
-  background-color: #f0f0f0;
+  background-color: #64b3c9;
+  border-radius: 10px;
 }
 
 nav button:focus {
@@ -80,6 +104,43 @@ nav button.theme-toggle.black .theme-icon {
     margin-bottom: 8px;
   }
 }
+
+.hamburger-toggle {
+    display: none;
+  }
+
+@media (max-width: 600px) {
+  nav {  
+    padding: 10px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    box-shadow: 0 2px 0 #64b3c9;
+}
+  nav.active > .no-toggle {
+    display: block;
+  }
+  .no-toggle {
+    display: inline-flex;
+  }
+  .hamburger-toggle {
+    display: block;
+    transition: block 0.5s ease-in;
+  }
+
+  nav button,
+  #unit-toggle,
+  #theme-toggle {
+    display: none;
+  }
+
+  nav.active button,
+  nav.active #unit-toggle,
+  nav.active #theme-toggle {
+    display: block;
+  }
+}
+
 
 /* header {
   line-height: 1.5;

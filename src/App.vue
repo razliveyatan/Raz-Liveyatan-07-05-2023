@@ -35,8 +35,8 @@ const handleToggleTheme = () => {
           <div class="msg-button-container">
             <button type="button" class="msg-button">Welcome to WeatherApp</button>
           </div>          
-            <RouterLink to="/Main"><button type="button" class="simple" :class="{bold : currentRoute === '/Main'}">Main</button></RouterLink>
-            <RouterLink to="/Favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/Main'}">Favorites</button></RouterLink>          
+            <RouterLink to="/home"><button type="button" class="simple" :class="{bold : currentRoute === '/Main'}">Main</button></RouterLink>
+            <RouterLink to="/favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/Main'}">Favorites</button></RouterLink>          
             <TempConversionButton/>          
              <button type="button" @click="handleToggleTheme">{{currentThemeType}}</button>           
         </nav>

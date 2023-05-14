@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {watch, reactive} from 'vue';
+import {watch, reactive,ref,onMounted} from 'vue';
 import { storeToRefs } from 'pinia';
 import type { IDestinationDisplay } from '@/interfaces/interfaces';
 import DestionationDetails from '../main/SearchResults/SearchResultCard/TopSection/DestinationDisplay/DestionationDetails.vue';
@@ -15,6 +15,7 @@ let temperature = reactive<any>([]);
 watch(defaultTempratureType, (newVal) => { 
   temperature=newVal;
 });
+
 
 const currentLocationStore = useLocationsStore();
 

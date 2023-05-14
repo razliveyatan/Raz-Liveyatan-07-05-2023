@@ -6,7 +6,7 @@ interface State {
 
 export const useCurrentThemeStore = defineStore('theme', {
   state: (): State => ({
-    currentThemeType: 'Theme',  
+    currentThemeType: 'Dark-Theme',  
     
   }),
   actions: {

@@ -18,18 +18,28 @@
 
 
 #app {  
+  /* background: linear-gradient(0deg,#9dc7c7,#9dc7c7 25%,#64b3c9 65%,#005986 90%,#005986);  
+  background-position: 50%;      
+  background-size: 200% 200%;
+  -webkit-animation: Animation 20s ease infinite;
+  -moz-animation: Animation 20s ease infinite;
+  animation: Animation 20s ease infinite; */
+  color:white;
+  height:1000px;
+}
+
+.wrapper {
   background: linear-gradient(0deg,#9dc7c7,#9dc7c7 25%,#64b3c9 65%,#005986 90%,#005986);  
   background-position: 50%;      
   background-size: 200% 200%;
   -webkit-animation: Animation 20s ease infinite;
   -moz-animation: Animation 20s ease infinite;
-  animation: Animation 20s ease infinite;
-  color:white;
-  height:920px;
+  animation: Animation 20s ease infinite; 
+  height:100%; 
 }
 
-.black-theme {
-  background-color: black;
+.wrapper.Dark-Theme{
+  background: black;
 }
 
 /* Animations */

@@ -17,28 +17,28 @@ watch(() => router.path, () => {
 });
 
 const handleToggleTheme = () => {
-  if (currentThemeType.value === 'Theme'){
-    currentTheme.setCurrentTheme('Dark-Theme');
-    currentThemeType.value = 'Dark-Theme';
-  }
-  else {
+  if (currentThemeType.value === 'Dark-Theme'){
     currentTheme.setCurrentTheme('Theme');
     currentThemeType.value = 'Theme';
+  }
+  else {
+    currentTheme.setCurrentTheme('Dark-Theme');
+    currentThemeType.value = 'Dark-Theme';
   }
 }
 
 </script>
 
 <template> 
-    <div class="wrapper">                                     
-        <nav>
+    <div class="wrapper" :class="currentThemeType === 'Dark-Theme' ? '' : 'Dark-Theme'">                                     
+        <nav :class="currentThemeType === 'Dark-Theme' ? '' : 'Dark-Theme'">
           <div class="msg-button-container">
             <button type="button" class="msg-button">Welcome to WeatherApp</button>
           </div>          
             <RouterLink to="/Main"><button type="button" class="simple" :class="{bold : currentRoute === '/Main'}">Main</button></RouterLink>
             <RouterLink to="/Favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/Main'}">Favorites</button></RouterLink>          
             <TempConversionButton/>          
-            <button type="button" :class="{currentThemeType === 'Theme' ? '' : 'Dark-Theme'}" @click="handleToggleTheme">{{currentThemeType}}</button>          
+             <button type="button" @click="handleToggleTheme">{{currentThemeType}}</button>           
         </nav>
       <RouterView />                 
     </div>      
@@ -66,6 +66,11 @@ nav {
     margin: 2rem 0;
     background-color: rgb(0, 89, 134,.5);
     padding:0 2rem;
+}
+nav.Dark-Theme {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 10px;
 }
 .msg-button{  
   cursor: default;

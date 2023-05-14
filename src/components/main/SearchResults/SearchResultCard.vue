@@ -22,7 +22,7 @@ const forecastItems = reactive<IDailyForecast[]>([]);
 let highlightText = reactive<any>([]);
 
 if (currentLocation && currentLocation !== null){    
-    watch(currentLocation, (newVal) => {
+    watch([currentLocation, currentConditionsStore],([newVal,forecast]) => {
       displayItems.splice(0);
   const newDisplayItem: IDestinationDisplay = {    
     weatherIcon: newVal?.weatherIcon ?? '',
@@ -37,8 +37,8 @@ if (currentLocation && currentLocation !== null){
     weatherFahrenheitlUnitType: newVal?.weatherFahrenheitlUnitType ?? ''
     };
     displayItems.push(newDisplayItem);
-    highlightText = currentConditionsStore.currentLocationForecast?.highLightString;
-    const dailyForecastArray = currentConditionsStore.currentLocationForecast?.dailyForecast;
+    highlightText = forecast.currentLocationForecast?.highLightString;
+    const dailyForecastArray = forecast.currentLocationForecast?.dailyForecast;
     if (dailyForecastArray){
       forecastItems.splice(0);
       dailyForecastArray.forEach((forecast:IDailyForecast) => {
@@ -49,8 +49,8 @@ if (currentLocation && currentLocation !== null){
 }
 
 onMounted(() => {
-  displayItems.splice(0);
-  forecastItems.splice(0);
+  // displayItems.splice(0);
+  // forecastItems.splice(0);
   if (!locationStore.isFromFavoritesLocations){
     currentLocation.value = null;
     currentConditionsStore.setCurrentLocationForecast(null);
@@ -65,7 +65,7 @@ onMounted(() => {
             <AddToFavoriteButton/>           
         </div>        
         <MainForecast :forecast-synopsis="highlightText"/>   
-        <DailyForecast :forecasts="forecastItems" :is-day-time="currentConditionsStore.currentLocationForecast?.isDayTime"/>
+        <DailyForecast :forecasts="forecastItems"/>
     </div>
 </template>
 

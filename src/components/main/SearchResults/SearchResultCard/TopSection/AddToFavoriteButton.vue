@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import IconSupportVue from '@/components/icons/IconSupport.vue';
 import {useLocationsStore} from '@/stores/locations-store';
 import { toast } from 'vue3-toastify';
-import { getFavoritesFromSessionStorage } from '@/services/data-service';
+import { findFavorite, getFavoritesFromSessionStorage, removeFavorite } from '@/services/data-service';
 const currentLocationStore = useLocationsStore();
 
 onMounted(() => {
@@ -14,7 +14,8 @@ onMounted(() => {
       if (!exists){
         const favorites = getFavoritesFromSessionStorage();
         if (favorites && favorites.length > 0){
-          exists = favorites.some(favorite => favorite.favoriteForecast.cityKey === location.cityKey); //TODO: Continue favorites logic from sessionStorage
+          exists = favorites.some(favorite => favorite.cityKey === location.cityKey);
+          currentLocationStore.addFavoriteLocation(location);
         }
       }
       addToFavoritesText.value = exists ? 'Remove from Favorites' : 'Add to Favorites';
@@ -35,10 +36,30 @@ const handleFavorite = () => {
     const exists = currentLocationStore.isLocationInFavorites(location.cityKey);
       if (exists){
           currentLocationStore.removeFavoriteLocation(location.cityKey);
+          const favorites = getFavoritesFromSessionStorage();
+          if (favorites && favorites.length > 0){
+            const removeResponse = removeFavorite(location.cityKey);
+            if (!removeResponse){
+              toast.error('Error removing favorite from session storage');
+            }
+          }
           addToFavoritesText.value = 'Add to Favorites';
       }
       else {        
           currentLocationStore.addFavoriteLocation(location);
+          const favorites = getFavoritesFromSessionStorage();
+          if (favorites && favorites.length > 0){
+            const favorite = findFavorite(location.cityKey);
+            if (!favorite){
+              favorites.push(location);
+              sessionStorage.setItem('favorites', JSON.stringify(location));
+            }            
+          }
+          else{
+            let favorites:any = [];
+            favorites.push(location);                  
+            sessionStorage.setItem('favorites', JSON.stringify(favorites));
+          }
           addToFavoritesText.value = 'Remove from Favorites';        
       }
     }

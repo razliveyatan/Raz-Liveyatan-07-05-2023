@@ -32,6 +32,9 @@ export const useLocationsStore = defineStore('locations', {
     },    
     isLocationInFavorites(cityKey:number) : boolean {
       return this.favoriteLocations.some(favorite => favorite.cityKey === cityKey);
+    },    
+    resetFavoriteLocations(): void {
+      this.favoriteLocations = [];
     }
   },
 });

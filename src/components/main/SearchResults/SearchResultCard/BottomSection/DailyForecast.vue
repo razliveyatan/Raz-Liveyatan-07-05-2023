@@ -5,8 +5,7 @@ import DayTempratures from './DayTempratures.vue';
 import type { IDailyForecast } from '@/interfaces/interfaces';
 
 type forecastProps = {
-    forecasts: IDailyForecast[] | null;
-    isDayTime:boolean | undefined
+    forecasts: IDailyForecast[] | null;    
 }
 defineProps<forecastProps>();
 

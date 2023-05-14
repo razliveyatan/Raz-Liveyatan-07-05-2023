@@ -49,9 +49,8 @@ const debouncedFetchData = debounce(() => {
 const getCurrentLocationConditions = async(city:ILocation) => {
   if (city){
     try {
-      const response = getItemFromSessionStorage('locationConditions') != null ? getItemFromSessionStorage('locationConditions') : await getLocationConditions(city.cityKey);
-      if (response && response.data){ 
-      setItemInSessionStorage('locationConditions',response);
+      const response = await getLocationConditions(city.cityKey);
+      if (response && response.data){       
       for (let i=0;i<response.data.length;i++){
           const normalized = normalizeDestinationObject(city,response.data[i], defaultTempratureType.defaultTempratureType);
           if (normalized){
@@ -59,16 +58,15 @@ const getCurrentLocationConditions = async(city:ILocation) => {
             currentLocationStore.setCurrentLocation(normalized);
           }
         }
-        const forecastResponse = getItemFromSessionStorage('forecastData') != null ? getItemFromSessionStorage('forecastData') : await getDailyForecast(city.cityKey, defaultTempratureType.defaultTempratureType === 'C');
-        if (forecastResponse && forecastResponse.data){
-          setItemInSessionStorage('forecastData',forecastResponse);
+        const forecastResponse = await getDailyForecast(city.cityKey, defaultTempratureType.defaultTempratureType === 'C');
+        if (forecastResponse && forecastResponse.data){          
           const normalizedForecast = normalizeForecastObject(city, forecastResponse);
           if (normalizedForecast){
             currentLocationForecast.setCurrentLocationForecast(null);
             currentLocationForecast.setCurrentLocationForecast(normalizedForecast);
           }          
         }
-      }
+      }     
       searchResultsVisible.value = false;
     }
     catch(error){
@@ -81,8 +79,8 @@ const getCurrentLocationConditions = async(city:ILocation) => {
 onMounted(() =>{     
   const location = currentLocationStore.currentLocation;
   const city = {
-    cityName: location?.cityName !== '' ? location?.cityName : 'Tel Aviv',
-    cityKey:location?.cityKey ? location?.cityKey : 215854
+    cityName: location && location?.cityName !== '' ? location?.cityName : 'Tel Aviv',
+    cityKey:location && location?.cityKey ? location?.cityKey : 215854
   } as ILocation
   if (city){
     getCurrentLocationConditions(city)
@@ -189,7 +187,4 @@ onMounted(() =>{
   opacity: 1;
 }
 
-@media screen and (max-width:400px){
-
-}
 </style>

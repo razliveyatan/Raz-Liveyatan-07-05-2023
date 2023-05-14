@@ -1,4 +1,4 @@
-import type { IResponse, IFavorite} from "@/interfaces/interfaces";
+import type { IResponse, IFavorite, IDestinationDisplay} from "@/interfaces/interfaces";
 import { get } from '@/domain/data-service';
 // const apiKey = '8n7G4gwBdAgBQsnstXHTEdCAknbUJH7f';
 const apiKey = 'dLnue3OPl3MARS0dReZRApANALGluUkk';
@@ -59,7 +59,7 @@ export const getItemFromSessionStorage = (key:string) => {
 export const getFavoritesFromSessionStorage = () =>{ 
     try {
         const favoritesJSON = sessionStorage.getItem('favorites');
-        const favorites = favoritesJSON ? JSON.parse(favoritesJSON) as IFavorite[] : [];
+        const favorites = favoritesJSON ? JSON.parse(favoritesJSON) as IDestinationDisplay[] : [];
         return favorites;
       } catch (error) {
         console.error('Error retrieving favorites from session storage:', error);
@@ -71,7 +71,7 @@ const favorites = getFavoritesFromSessionStorage();
 
 export const findFavorite = (cityKey:number) => {
   try {
-    return favorites.find(favorite => favorite.favoriteForecast.cityKey === cityKey);
+    return favorites.find(favorite => favorite.cityKey === cityKey);
   }
   catch(error){
     console.error("Error Finding favorite in data");
@@ -82,7 +82,7 @@ export const findFavorite = (cityKey:number) => {
 // Function to remove an item from the favorites array
 export const removeFavorite = (cityKey:number) =>{
     try{
-        const index = favorites.findIndex(favorite => favorite.favoriteForecast.cityKey === cityKey);
+        const index = favorites.findIndex(favorite => favorite.cityKey === cityKey);
         if (index !== -1) {
           favorites.splice(index, 1);
           sessionStorage.setItem('favorites', JSON.stringify(favorites));

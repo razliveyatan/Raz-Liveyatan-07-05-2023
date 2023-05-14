@@ -1,7 +1,7 @@
-import type { IResponse, IFavorite, IDestinationDisplay} from "@/interfaces/interfaces";
+import type { IResponse, IDestinationDisplay} from "@/interfaces/interfaces";
 import { get } from '@/domain/data-service';
-// const apiKey = '8n7G4gwBdAgBQsnstXHTEdCAknbUJH7f';
-const apiKey = 'dLnue3OPl3MARS0dReZRApANALGluUkk';
+const apiKey = '8n7G4gwBdAgBQsnstXHTEdCAknbUJH7f';
+// const apiKey = 'dLnue3OPl3MARS0dReZRApANALGluUkk';
 const language = 'en-us';
 
 export const getLocationsList = async(query:string):Promise<IResponse> => {
@@ -10,7 +10,7 @@ export const getLocationsList = async(query:string):Promise<IResponse> => {
         apikey:apiKey,
         language:language
     }
-    return get('http://dataservice.accuweather.com/locations/v1/cities/autocomplete',data);
+    return get('https://dataservice.accuweather.com/locations/v1/cities/autocomplete',data);
 }
 
 export const getLocationConditions = async(locationKey:number):Promise<IResponse> => {
@@ -19,7 +19,7 @@ export const getLocationConditions = async(locationKey:number):Promise<IResponse
         language:language,
         details:true
     }
-    return get (`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`,data);
+    return get (`https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`,data);
 }
 
 export const getDailyForecast = async(locationKey:number, isMetric:boolean):Promise<IResponse> => {
@@ -29,7 +29,7 @@ export const getDailyForecast = async(locationKey:number, isMetric:boolean):Prom
         details:false,
         mertric:isMetric,        
     }
-    return get (`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`,data);
+    return get (`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`,data);
 }
 
 export const setItemInSessionStorage = (key:string, objectToStore:object) => {

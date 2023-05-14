@@ -37,7 +37,7 @@ defineProps<forecastProps>();
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  width:130px;
+  width:150px;
   background-color: rgb(0, 89, 134,.5);
   border-radius: 10px;
   height: 150px;

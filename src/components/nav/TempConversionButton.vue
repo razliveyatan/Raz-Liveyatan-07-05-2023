@@ -17,19 +17,20 @@ const handleTemperatueTypeConversion = () => {
 
 <template>
     <button id="unit-toggle" type="button" @click="handleTemperatueTypeConversion">
-        <span :class="{ bold: chosenTemperature === 'C' }">°C</span>
+        <span class="simple" :class="{ bold: chosenTemperature === 'C' }">°C</span>
         <span> / </span>
-        <span :class="{ bold: chosenTemperature === 'F' }">°F</span>
+        <span class="simple" :class="{ bold: chosenTemperature === 'F' }">°F</span>
     </button>    
 </template>
 
 <style scoped>
-.black {
-    color:black;
+.simple{
+    font-size: 14px;
 }
 
 .bold {
     font-weight:bold;
+    font-size:16px;
 }
 
 </style>

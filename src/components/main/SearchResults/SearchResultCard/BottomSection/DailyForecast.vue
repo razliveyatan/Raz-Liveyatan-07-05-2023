@@ -15,7 +15,7 @@ defineProps<forecastProps>();
     <div class="daily-forecast-cotainer">
         <div class="daily-forecast-item" :class="{'show': forecast }" v-for="forecast in forecasts" :key="forecast.date.toString()">
             <DayGeneralDetails :date="forecast.date"/>
-            <IconCurrentWeatherVue :icon-url="isDayTime ? forecast.day.weatherIcon : forecast.night.weatherIcon"/>
+            <IconCurrentWeatherVue :icon-url="forecast.day.weatherIcon"/>
             <DayTempratures :min-temperature="forecast.minTemperature.temperature" :max-temperature="forecast.maxTemperature.temperature"/>
         </div>
     </div>
@@ -27,6 +27,7 @@ defineProps<forecastProps>();
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  gap:4rem;
 }
 
 .daily-forecast-item {
@@ -37,10 +38,25 @@ defineProps<forecastProps>();
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  width:130px;
+  background-color: rgb(0, 89, 134,.5);
+  border-radius: 10px;
+  height: 150px;
+  justify-content: center;
 }
 
 .daily-forecast-item.show {
   opacity: 1;
   transform: translateY(0);
+}
+@media (max-width: 650px) { 
+  .daily-forecast-cotainer {
+    align-items: center;
+    justify-content: center;
+    width:80%;
+  }
+  .daily-forecast-item {
+    width:260px;
+  }
 }
 </style>

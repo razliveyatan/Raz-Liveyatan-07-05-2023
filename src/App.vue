@@ -1,26 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {ref, watch, onMounted} from 'vue';
 import TempConversionButton from '@/components/nav/TempConversionButton.vue';
-const isMenuOpen = ref(false);
+import {useRoute} from 'vue-router';
+import {useCurrentThemeStore} from '@/stores/theme-store';
+const currentTheme = useCurrentThemeStore();
+const router = useRoute();
 
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
-};
+const currentRoute = ref('/Main');
+const currentThemeType = ref('');
+onMounted(() => {  
+  currentThemeType.value = currentTheme.currentThemeType ? currentTheme.currentThemeType : 'Theme';
+});
+
+watch(() => router.path, () => {
+  currentRoute.value = router.path;
+});
+
+const handleToggleTheme = () => {
+  if (currentThemeType.value === 'Theme'){
+    currentTheme.setCurrentTheme('Dark-Theme');
+    currentThemeType.value = 'Dark-Theme';
+  }
+  else {
+    currentTheme.setCurrentTheme('Theme');
+    currentThemeType.value = 'Theme';
+  }
+}
 
 </script>
 
 <template> 
-    <div class="wrapper">                          
-        <nav :class="{active : isMenuOpen}">
-          <div class="no-toggle">
-            <RouterLink to="/Main"><button>Main</button></RouterLink>
-            <RouterLink to="/Favorites"><button>Favorites</button></RouterLink>          
-          </div>
-          <div class="menu-toggle" :class="{active : isMenuOpen}">
+    <div class="wrapper">                                     
+        <nav>
+          <div class="msg-button-container">
+            <button type="button" class="msg-button">Welcome to WeatherApp</button>
+          </div>          
+            <RouterLink to="/Main"><button type="button" class="simple" :class="{bold : currentRoute === '/Main'}">Main</button></RouterLink>
+            <RouterLink to="/Favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/Main'}">Favorites</button></RouterLink>          
             <TempConversionButton/>          
-            <button id="theme-toggle">Theme</button>
-            <button id="hamburger-toggle" @click="toggleMenu" class="hamburger-toggle">☰</button>          
-          </div>
+            <button type="button" :class="{currentThemeType === 'Theme' ? '' : 'Dark-Theme'}" @click="handleToggleTheme">{{currentThemeType}}</button>          
         </nav>
       <RouterView />                 
     </div>      
@@ -28,28 +46,37 @@ const toggleMenu = () => {
 
 <style scoped>
 .wrapper {
-  /* width:100%;  */
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.simple {
+  font-weight: normal;
+}
+
+.bold {
+    font-weight:bold;
 }
 
 nav {  
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  box-shadow: 0 2px 0 #64b3c9;
-    /* padding: 10px;
     display: flex;
-    justify-content: end;
-    align-items: center;
-    box-shadow: 0 2px 0 #64b3c9; */
+    flex-direction: row;
+    justify-content: flex-end;    
+    width: 100%;
+    margin: 2rem 0;
+    background-color: rgb(0, 89, 134,.5);
+    padding:0 2rem;
+}
+.msg-button{  
+  cursor: default;
 }
 
-.menu-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.msg-button:hover{  
+  background-color: transparent;
+}
+
+.msg-button-container {
+  margin-right:auto;
 }
 
 nav button {
@@ -58,8 +85,7 @@ nav button {
   color: #FFFFFF;
   font-size: 16px;
   padding: 8px 16px;
-  cursor: pointer;
-  /* transition: background-color 0.1s ease; */
+  cursor: pointer;  
 }
 
 nav button:hover {
@@ -92,111 +118,21 @@ nav button.theme-toggle.black .theme-icon {
   fill: #000;
 }
 
-/* Responsive Styles */
-@media screen and (max-width: 600px) {
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  nav button {
-    padding: 8px 12px;
-    margin-bottom: 8px;
-  }
-}
-
-.hamburger-toggle {
-    display: none;
-  }
-
 @media (max-width: 600px) {
-  nav {  
-    padding: 10px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    box-shadow: 0 2px 0 #64b3c9;
-}
-  nav.active > .no-toggle {
-    display: block;
-  }
-  .no-toggle {
-    display: inline-flex;
-  }
-  .hamburger-toggle {
-    display: block;
-    transition: block 0.5s ease-in;
+
+  .wrapper{
+    padding: 0 1rem;
   }
 
-  nav button,
-  #unit-toggle,
-  #theme-toggle {
-    display: none;
+    .msg-button-container {
+      display: none;
   }
 
-  nav.active button,
-  nav.active #unit-toggle,
-  nav.active #theme-toggle {
-    display: block;
+  nav{
+    justify-content: center;
+    padding:0;
+    border-radius: 10px;
   }
 }
 
-
-/* header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {  
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-  
-  .wrapper {
-    display: flex;
-    flex-direction: row;    
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-} */
 </style>

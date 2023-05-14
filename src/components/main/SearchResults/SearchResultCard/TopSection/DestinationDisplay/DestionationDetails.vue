@@ -14,14 +14,17 @@ defineProps<{
 
 <style scoped>
 .destination-details-container {
-  margin-left: 10px;
-  opacity: 0;
-  transform: translateY(20px);
+  margin-left: 10px;    
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+.temperature , .city-name{
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 5px;
+}
 
-.destination-details-container.show {
+/* .destination-details-container.show {
   opacity: 1;
   transform: translateY(0);
-}
+} */
 </style>

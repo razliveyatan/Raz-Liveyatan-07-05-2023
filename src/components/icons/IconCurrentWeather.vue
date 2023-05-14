@@ -33,12 +33,12 @@ defineProps<{
 }
 
 .icon-current-weather img {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 45px;
 }
 
 .icon-current-weather svg {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 45px;
 }
 </style>

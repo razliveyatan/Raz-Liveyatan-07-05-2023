@@ -9,18 +9,21 @@ import {useLocationsStore} from '@/stores/locations-store';
 import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-store';
 import { useCurrentConditionsStore } from '@/stores/conditions-store';
 
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 import type {IDestinationDisplay} from '@/interfaces/interfaces';
 
+const locationStore = useLocationsStore();
 const {currentLocation} = storeToRefs(useLocationsStore());
 const currentConditionsStore = useCurrentConditionsStore();
+
 const defaultTempratureType = useDefaultTempratureTypeStore().defaultTempratureType;
 const displayItems = reactive<IDestinationDisplay[]>([]);
 const forecastItems = reactive<IDailyForecast[]>([]);
 let highlightText = reactive<any>([]);
 
-if (currentLocation){
-    watch(currentLocation, (newVal) => {    
+if (currentLocation && currentLocation !== null){    
+    watch(currentLocation, (newVal) => {
+      displayItems.splice(0);
   const newDisplayItem: IDestinationDisplay = {    
     weatherIcon: newVal?.weatherIcon ?? '',
     WeatherText: newVal?.WeatherText ?? '',
@@ -33,20 +36,30 @@ if (currentLocation){
     weatherFahrenheitTemprature: newVal?.weatherCelsiusTemprature ?? 0,
     weatherFahrenheitlUnitType: newVal?.weatherFahrenheitlUnitType ?? ''
     };
-  displayItems.push(newDisplayItem);
-  highlightText = currentConditionsStore.currentLocationForecast?.highLightString;
-  const dailyForecastArray = currentConditionsStore.currentLocationForecast?.dailyForecast;
-  if (dailyForecastArray){
-    dailyForecastArray.forEach((forecast:IDailyForecast) => {
-        forecastItems.push(forecast);
-    })
+    displayItems.push(newDisplayItem);
+    highlightText = currentConditionsStore.currentLocationForecast?.highLightString;
+    const dailyForecastArray = currentConditionsStore.currentLocationForecast?.dailyForecast;
+    if (dailyForecastArray){
+      forecastItems.splice(0);
+      dailyForecastArray.forEach((forecast:IDailyForecast) => {
+          forecastItems.push(forecast);
+      })
+    }
+  });
+}
+
+onMounted(() => {
+  displayItems.splice(0);
+  forecastItems.splice(0);
+  if (!locationStore.isFromFavoritesLocations){
+    currentLocation.value = null;
+    currentConditionsStore.setCurrentLocationForecast(null);
   }
 });
-}
 
 </script>
 <template>
-    <div class="search-results-card" v-if="displayItems.length > 0">
+    <div class="search-results-card" v-if="displayItems.length > 0 && currentLocation !== null">
         <div class="search-results-card-top-inner">
             <DestinationDisplay :display-items="displayItems"/>
             <AddToFavoriteButton/>           
@@ -81,41 +94,13 @@ if (currentLocation){
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
-}
-/* .hidden {
-    display: none;
+  padding:0 1rem;
 }
 
-.search-results-card {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-  padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 920px;
-    margin:0 auto;
+@media (max-width: 650px) { 
+  .search-results-card-top-inner {
+    width: 85%;
+  }
 }
 
-.search-results-card-top-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-} */
-/* .search-results-card {
-    background-color:cornsilk;
-    border: 1px black solid;
-    width:860px;
-    min-height: 120px;
-    display: flex; 
-    flex-direction: column;
-    margin:0 auto;
-}
-.search-results-card-top-inner {
-    padding: 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-} */
 </style>

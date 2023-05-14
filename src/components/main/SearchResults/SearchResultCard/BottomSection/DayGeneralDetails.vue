@@ -7,10 +7,10 @@ defineProps<dateProps>()
 </script>
 
 <template>
-    <h2 class="daily-general-details-container" :class="{'show' : date}">
+    <div class="daily-general-details-container" :class="{'show' : date}">
         <span class="day-name">{{ getDayName(getDateString(new Date(date),false)) }}</span>
         <span class="day-date">{{getDateString(new Date(date),true)}}</span>
-    </h2>
+    </div>
 </template>
 
 <style scoped>
@@ -30,10 +30,11 @@ defineProps<dateProps>()
 .day-name {
   font-size: 18px;
   font-weight: bold;
+  margin-right:0.5rem;
 }
 
 .day-date {
   font-size: 14px;
-  color: #888;
+  color: #f3d4d4;
 }
 </style>

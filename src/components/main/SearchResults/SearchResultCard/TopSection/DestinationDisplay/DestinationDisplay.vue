@@ -33,11 +33,13 @@ const props = defineProps<{
 
 .destination-display-item {
   display: flex;
-  align-items: center;
-  margin-right: 10px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    align-items: center;
+    margin-right: 10px;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background-color: rgb(0, 89, 134,.5);
+    padding: 1rem;
+    border-radius: 10px;
 }
 
 .destination-display-item.show {

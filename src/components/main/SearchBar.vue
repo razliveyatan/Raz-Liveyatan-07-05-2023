@@ -37,9 +37,7 @@ const getLocationsData = async() => {
   }
   catch (error) {
     console.error(error);     
-    toast.error('An error occured while fetching locations' + error, {
-      autoClose:1000,
-    });
+    toast.error('An error occured while fetching locations' + error);
 }
   return {cities};
 }
@@ -75,26 +73,22 @@ const getCurrentLocationConditions = async(city:ILocation) => {
     }
     catch(error){
       console.error(error);     
-      toast.error('An error occured while fetching current location conditions' + error, {
-      autoClose:1000,
-    });
+      toast.error('An error occured while fetching current location conditions' + error);
     }    
   }
 }
 
-onMounted(() =>{
+onMounted(() =>{     
   const location = currentLocationStore.currentLocation;
   const city = {
-    cityName: location?.cityName,
-    cityKey:location?.cityKey        
+    cityName: location?.cityName !== '' ? location?.cityName : 'Tel Aviv',
+    cityKey:location?.cityKey ? location?.cityKey : 215854
   } as ILocation
   if (city){
     getCurrentLocationConditions(city)
     .catch(error => {
         console.error(error);
-        toast.error('An error occurred while fetching current location conditions: ' + error, {
-          autoClose: 1000,
-        });
+        toast.error('An error occurred while fetching current location conditions: ' + error);
       });
     }  
 });
@@ -106,7 +100,7 @@ onMounted(() =>{
   <div class="search-container">
     <input type="text" v-model="input" @change="getLocationsData" @input="debouncedFetchData" placeholder="Search Destination..." />
     <div class="search-results" v-if="input !== '' && input.length > 1 && searchResultsVisible">
-      <div class="city-item" v-for="city in cities" :key="city.cityID" @click="getCurrentLocationConditions(city)">
+      <div class="city-item" v-for="city in cities" :key="city.cityKey" @click="getCurrentLocationConditions(city)">
         <p>{{ city.cityName + ', ' + city.countryName + ', ' + city.countryID}}</p>
       </div>
       <div class="item error" v-if="input && !cities">
@@ -122,21 +116,56 @@ onMounted(() =>{
   margin-bottom: 20px;
 }
 
+.search-results{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  max-height:200px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.search-results::-webkit-scrollbar {
+        width: 12px;
+  }
+  
+  .search-results::-webkit-scrollbar-track {
+      border-radius: 8px;
+      background-color: #e7e7e7;
+      border: 1px solid #cacaca;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  }
+  
+  .search-results::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background-color: rgb(0, 89, 134,.5);;
+  }
+
 .search-container input {
-  width: 100%;
+  width: 300px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: border-color 0.3s ease;
+  outline:none; 
 }
 
-.search-container .item.city {
-  background-color: #fff;
-  padding: 5px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.search-container .city-item {
+    width: 300px;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+    background-color: rgb(0, 89, 134,.5);
+    cursor: pointer;
+}
+
+.search-container .city-item:hover {
+    transition: border-color 0.3s ease;
+    background-color: rgba(233, 236, 238, 0.5);
+    color:rgb(0, 89, 134)
+    
 }
 
 .search-container .item.city p {
@@ -160,85 +189,7 @@ onMounted(() =>{
   opacity: 1;
 }
 
-/* .search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+@media screen and (max-width:400px){
 
-input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
-
-.item.city {
-  padding: 10px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-.item.error {
-  color: red;
-} */
-
-/* @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
-}
-
-body {
-  padding: 20px;
-  min-height: 100vh;
-  background-color: rgb(234, 242, 255);
-}
-.search-container {
-    width:100%;
-    margin:0 auto;
-}
-input {
-  display: block;
-  width: 350px;
-  margin: 20px auto;
-  padding: 10px 45px;
-  background: white url("src/assets/search-icon.svg") no-repeat 15px center;
-  background-size: 15px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-}
-
-.item {
-  width: 350px;
-  margin: 0 auto 10px auto;
-  padding: 10px 20px;
-  color: white;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.city {
-  background-color: rgb(97, 62, 252);
-  cursor: pointer;
-}
-
-.error {
-  background-color: tomato;
-}
-
-.hidden {
-  display: none;
-} */
 </style>

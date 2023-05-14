@@ -5,7 +5,7 @@ import {useDefaultTempratureTypeStore} from '@/stores/temprature-conversion-stor
 import type {IDailyTemperature} from '@/interfaces/interfaces';
 import {convertToUnit} from '@/services/data-helper';
 const {defaultTempratureType} = storeToRefs(useDefaultTempratureTypeStore());
-let temperature = reactive<any>([]); 
+const temperature = reactive<any>([]); 
 
 type temperatureProps = {
     maxTemperature:IDailyTemperature,
@@ -13,39 +13,32 @@ type temperatureProps = {
 }
 defineProps<temperatureProps>();
 watch(defaultTempratureType, (newVal) => { 
-    temperature: newVal;
+    temperature.push(newVal);
 });
 
 </script>
 <template>
-    <div class="day-temperatures-container" :class="{'show' : maxTemperature.value > -50 }">
+    <div class="day-temperatures-container">
         <p class="min-temperature">{{temperature === maxTemperature.unit ? maxTemperature.value : convertToUnit(maxTemperature.value,defaultTempratureType) }}°</p>
         <p class="max-temperature">/{{temperature === minTemperature.unit ? minTemperature.value : convertToUnit(minTemperature.value,defaultTempratureType) }}°</p>
     </div>
 </template>
 
 <style scoped>
-.daily-temprature-container {
+.day-temperatures-container{
+  width: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  justify-content: center;
 }
 
-.daily-temprature-container.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.high {
+.min-temperature{
   font-size: 18px;
   font-weight: bold;
   margin-right: 5px;
 }
 
-.low {
+max-temperature  {
   font-size: 14px;
   color: #888;
 }

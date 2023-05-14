@@ -1,15 +1,35 @@
 @import './base.css';
 
-#app {
-  background-color: #005986;
-  background-image: linear-gradient(0deg,#d8eeee,#d8eeee 25%,#64b3c9 65%,#005986 90%,#005986);
-  background-attachment: fixed;
-  background-position: 50%;
-  background-size: cover;
-  padding-bottom: 60px;  
-  padding: 2rem;
-  font-weight: normal;
-  margin:0 auto;
+@-webkit-keyframes Animation {
+  0%{background-position:10% 0%}
+  50%{background-position:91% 100%}
+  100%{background-position:10% 0%}
+}
+@-moz-keyframes Animation {
+  0%{background-position:10% 0%}
+  50%{background-position:91% 100%}
+  100%{background-position:10% 0%}
+}
+@keyframes Animation { 
+  0%{background-position:10% 0%}
+  50%{background-position:91% 100%}
+  100%{background-position:10% 0%}
+}
+
+
+#app {  
+  background: linear-gradient(0deg,#9dc7c7,#9dc7c7 25%,#64b3c9 65%,#005986 90%,#005986);  
+  background-position: 50%;      
+  background-size: 200% 200%;
+  -webkit-animation: Animation 20s ease infinite;
+  -moz-animation: Animation 20s ease infinite;
+  animation: Animation 20s ease infinite;
+  color:white;
+  height:920px;
+}
+
+.black-theme {
+  background-color: black;
 }
 
 /* Animations */
@@ -31,41 +51,4 @@
   }
 }
 
-@media (max-width: 600px) {
-  .hamburger-toggle {
-    display: block;
-  }
 
-  nav a,
-  #unit-toggle,
-  #theme-toggle {
-    display: none;
-  }
-
-  nav.active a,
-  nav.active #unit-toggle,
-  nav.active #theme-toggle {
-    display: block;
-  }
-}
-
-/* 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {  
-  #app {
-    display: flex;
-    margin:0 auto;
-  }
-} */

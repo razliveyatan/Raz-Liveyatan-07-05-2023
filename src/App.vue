@@ -6,7 +6,7 @@ import {useCurrentThemeStore} from '@/stores/theme-store';
 const currentTheme = useCurrentThemeStore();
 const router = useRoute();
 
-const currentRoute = ref('/Main');
+const currentRoute = ref('/home');
 const currentThemeType = ref('');
 onMounted(() => {  
   currentThemeType.value = currentTheme.currentThemeType ? currentTheme.currentThemeType : 'Theme';
@@ -35,8 +35,8 @@ const handleToggleTheme = () => {
           <div class="msg-button-container">
             <button type="button" class="msg-button">Welcome to WeatherApp</button>
           </div>          
-            <RouterLink to="/home"><button type="button" class="simple" :class="{bold : currentRoute === '/Main'}">Main</button></RouterLink>
-            <RouterLink to="/favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/Main'}">Favorites</button></RouterLink>          
+            <RouterLink to="/home"><button type="button" class="simple" :class="{bold : currentRoute === '/home'}">Home</button></RouterLink>
+            <RouterLink to="/favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/home'}">Favorites</button></RouterLink>          
             <TempConversionButton/>          
              <button type="button" @click="handleToggleTheme">{{currentThemeType}}</button>           
         </nav>

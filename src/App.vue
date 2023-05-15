@@ -38,7 +38,7 @@ const handleToggleTheme = () => {
             <RouterLink to="/home"><button type="button" class="simple" :class="{bold : currentRoute === '/home'}">Home</button></RouterLink>
             <RouterLink to="/favorites"><button type="button" class="simple" :class="{bold : currentRoute !== '/home'}">Favorites</button></RouterLink>          
             <TempConversionButton/>          
-             <button type="button" @click="handleToggleTheme">{{currentThemeType}}</button>           
+             <button type="button" @click="handleToggleTheme">{{currentThemeType === 'Dark-Theme' ? 'Dark' : 'Theme' }}</button>           
         </nav>
       <RouterView />                 
     </div>      
